@@ -57,7 +57,7 @@
 如下：
 
 ```java
-class Demo{
+class DDDDDDDDDDDDDDDDDDDDDemo{
     public static void main(String[] args) {
         System.out.println("Hello，World!");
     }
