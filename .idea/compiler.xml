@@ -3,6 +3,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Chess" options="--add-modules java.base,java.desktop" />
+      <module name="ChessDemo" options="--add-modules java.base,java.desktop" />
     </option>
   </component>
 </project>
