@@ -1,3 +1,5 @@
+package src;
+
 import view.ChessGameFrame;
 
 import javax.swing.*;
