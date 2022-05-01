@@ -197,9 +197,6 @@ public class ClickController {
             int srcX = history.get(historyCnt-1).getSrcX();
             int srcY = history.get(historyCnt-1).getSrcY();
 
-            int destX = history.get(historyCnt-1).getDestX();
-            int destY = history.get(historyCnt-1).getDestY();
-
             ChessComponent dead = history.get(historyCnt-1).getDeadChess();
             ChessComponent src = history.get(historyCnt-1).getChess0();
             EmptySlotComponent empty = new EmptySlotComponent(move.getChessboardPoint(),move.getLocation(),move.getClickController(),chessboard.getCHESS_SIZE());
