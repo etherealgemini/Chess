@@ -90,6 +90,7 @@ public class Chessboard extends JComponent {
             remove(chess2);
             add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
         }
+
         chess1.swapLocation(chess2);
         int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
         chessComponents[row1][col1] = chess1;
@@ -98,6 +99,19 @@ public class Chessboard extends JComponent {
 
         chess1.repaint();
         chess2.repaint();
+    }
+    public void swapChessComponentsWithoutRepaint(ChessComponent chess1, ChessComponent chess2) {
+        // Note that chess1 has higher priority, 'destroys' chess2 if exists.
+        if (!(chess2 instanceof EmptySlotComponent)) {
+            remove(chess2);
+            add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+        }
+        chess1.swapLocation(chess2);
+        int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
+        chessComponents[row1][col1] = chess1;
+        int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
+        chessComponents[row2][col2] = chess2;
+
     }
 
     public void initiateEmptyChessboard() {

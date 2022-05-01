@@ -14,6 +14,7 @@ import java.io.IOException;
  * RookChessComponent(车)、
  * BishopChessComponent(象)、
  * KnightChessComponent(马).
+ * 以及其他3种棋子类型
  */
 public abstract class ChessComponent extends JComponent {
 
@@ -134,4 +135,6 @@ public abstract class ChessComponent extends JComponent {
         g.setColor(squareColor);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
+
+
 }

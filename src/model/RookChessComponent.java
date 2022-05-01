@@ -25,11 +25,14 @@ public class RookChessComponent extends ChessComponent {
      */
     private Image rookImage;
 
+    private boolean rookFirstMove = true;
+
     /**
      * 读取加载车棋子的图片
      *
      * @throws IOException
      */
+    @Override
     public void loadResource() throws IOException {
         if (ROOK_WHITE == null) {
             ROOK_WHITE = ImageIO.read(new File("./images/rook-white.png"));
@@ -77,9 +80,13 @@ public class RookChessComponent extends ChessComponent {
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
         if (source.getX() == destination.getX()) {
+            //若在同一行:
+            //NOTICE: 此处row为竖行，而非横行！
             int row = source.getX();
+            //检索该行中*由棋子位置*到*落点位置*之间是否存在棋子，若存在则该次移动非法，即*检测是否越过棋子移动*
             for (int col = Math.min(source.getY(), destination.getY()) + 1;
                  col < Math.max(source.getY(), destination.getY()); col++) {
+
                 if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
                     return false;
                 }
@@ -95,6 +102,7 @@ public class RookChessComponent extends ChessComponent {
         } else { // Not on the same row or the same column.
             return false;
         }
+        rookFirstMove = false;
         return true;
     }
 
@@ -113,5 +121,9 @@ public class RookChessComponent extends ChessComponent {
             g.setColor(Color.RED);
             g.drawOval(0, 0, getWidth() , getHeight());
         }
+    }
+
+    public boolean isRookFirstMove() {
+        return rookFirstMove;
     }
 }

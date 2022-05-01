@@ -12,6 +12,11 @@ public class ChessboardPoint {
         this.y = y;
     }
 
+    public void resetChessBoardPoint(int x,int y){
+        this.x = x;
+        this.y = y;
+    }
+
     public int getX() {
         return x;
     }

@@ -15,6 +15,10 @@ import java.util.ArrayList;
  */
 
 public class PawnChessComponent extends ChessComponent {
+    public boolean isFirstMove() {
+        return firstMove;
+    }
+
     /**
      * 我们需要在这里实现对该兵的几种判断：
      * 是否首次移动（移动两格的合法性）
@@ -72,6 +76,15 @@ public class PawnChessComponent extends ChessComponent {
     public PawnChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor color, ClickController listener, int size) {
         super(chessboardPoint, location, color, listener, size);
         initiatePawnImage(color);
+    }
+    public PawnChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor color, ClickController listener, int size,boolean firstBypass,boolean firstMove,boolean doubleMove,boolean bypass, ChessComponent bypassPawn){
+        super(chessboardPoint, location, color, listener, size);
+        initiatePawnImage(color);
+        this.firstBypass=firstBypass;
+        this.bypassPawn=bypassPawn;
+        this.bypass=bypass;
+        this.doubleMove=doubleMove;
+        this.firstMove=firstMove;
     }
 
 
