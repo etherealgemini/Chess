@@ -9,7 +9,11 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 /**
- * 这个类是一个抽象类，主要表示8*8棋盘上每个格子的棋子情况，当前有两个子类继承它，分别是EmptySlotComponent(空棋子)和RookChessComponent(车)。
+ * 这个类是一个抽象类，主要表示8*8棋盘上每个格子的棋子情况，当前有以下子类继承它，分别是
+ * EmptySlotComponent(空棋子)、
+ * RookChessComponent(车)、
+ * BishopChessComponent(象)、
+ * KnightChessComponent(马).
  */
 public abstract class ChessComponent extends JComponent {
 
@@ -21,8 +25,14 @@ public abstract class ChessComponent extends JComponent {
      * 因此每个棋子占用的形状是一个正方形，大小是50*50
      */
 
-//    private static final Dimension CHESSGRID_SIZE = new Dimension(1080 / 4 * 3 / 8, 1080 / 4 * 3 / 8);
+    private static final Dimension CHESSGRID_SIZE = new Dimension(1080 / 4 * 3 / 8, 1080 / 4 * 3 / 8);
     private static final Color[] BACKGROUND_COLORS = {Color.WHITE, Color.BLACK};
+
+
+    public ClickController getClickController() {
+        return clickController;
+    }
+
     /**
      * handle click event
      */
@@ -94,6 +104,8 @@ public abstract class ChessComponent extends JComponent {
 
         if (e.getID() == MouseEvent.MOUSE_PRESSED) {
             System.out.printf("Click [%d,%d]\n", chessboardPoint.getX(), chessboardPoint.getY());
+
+            //onClick方法在这里获取click位置
             clickController.onClick(this);
         }
     }

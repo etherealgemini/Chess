@@ -1,10 +1,7 @@
 package view;
 
 
-import model.ChessColor;
-import model.ChessComponent;
-import model.EmptySlotComponent;
-import model.RookChessComponent;
+import model.*;
 import controller.ClickController;
 
 import javax.swing.*;
@@ -28,11 +25,27 @@ public class Chessboard extends JComponent {
      */
     private static final int CHESSBOARD_SIZE = 8;
 
+    /**
+     * 棋盘坐标本身即记录了该坐标对应类型，使用例：
+     * chessComponents[a][b] instanceof EmptySlotComponent
+     * chessComponents[a][b] instanceof KingChessComponent
+     *
+     * 这里chessComponents[a][b]自己就是ChessComponent的一个子类，即，chessComponents[][]是chessComponent类型的二维数组，其中每个元素均为chessComponent
+     */
     private final ChessComponent[][] chessComponents = new ChessComponent[CHESSBOARD_SIZE][CHESSBOARD_SIZE];
+
     private ChessColor currentColor = ChessColor.BLACK;
     //all chessComponents in this chessboard are shared only one model controller
     private final ClickController clickController = new ClickController(this);
+
+
+    public int getCHESS_SIZE() {
+        return CHESS_SIZE;
+    }
+
     private final int CHESS_SIZE;
+
+
 
 
     public Chessboard(int width, int height) {
@@ -44,10 +57,14 @@ public class Chessboard extends JComponent {
         initiateEmptyChessboard();
 
         // FIXME: Initialize chessboard for testing only.
-        initRookOnBoard(0, 0, ChessColor.BLACK);
-        initRookOnBoard(0, CHESSBOARD_SIZE - 1, ChessColor.BLACK);
-        initRookOnBoard(CHESSBOARD_SIZE - 1, 0, ChessColor.WHITE);
-        initRookOnBoard(CHESSBOARD_SIZE - 1, CHESSBOARD_SIZE - 1, ChessColor.WHITE);
+        initPawnOnBoard(0, 0, ChessColor.BLACK);
+        initPawnOnBoard(0, CHESSBOARD_SIZE - 1, ChessColor.BLACK);
+        initPawnOnBoard(CHESSBOARD_SIZE-1, 1, ChessColor.WHITE);
+        initPawnOnBoard(CHESSBOARD_SIZE - 1, CHESSBOARD_SIZE - 1, ChessColor.WHITE);
+        initRookOnBoard(0, 1, ChessColor.BLACK);
+        initRookOnBoard(0, CHESSBOARD_SIZE - 2, ChessColor.BLACK);
+        initRookOnBoard(CHESSBOARD_SIZE - 2, 0, ChessColor.WHITE);
+        initRookOnBoard(CHESSBOARD_SIZE - 2, CHESSBOARD_SIZE - 1, ChessColor.WHITE);
     }
 
     public ChessComponent[][] getChessComponents() {
@@ -92,6 +109,7 @@ public class Chessboard extends JComponent {
     }
 
     public void swapColor() {
+        //黑方先走，每次走棋后换方
         currentColor = currentColor == ChessColor.BLACK ? ChessColor.WHITE : ChessColor.BLACK;
     }
 
@@ -101,6 +119,35 @@ public class Chessboard extends JComponent {
         putChessOnBoard(chessComponent);
     }
 
+    private void initBishopOnBoard(int row, int col, ChessColor color) {
+        ChessComponent chessComponent = new BishopChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        putChessOnBoard(chessComponent);
+    }
+
+    private void initKnightOnBoard(int row, int col, ChessColor color) {
+        ChessComponent chessComponent = new KnightChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        putChessOnBoard(chessComponent);
+    }
+
+    private void initQueenOnBoard(int row, int col, ChessColor color) {
+        ChessComponent chessComponent = new QueenChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        putChessOnBoard(chessComponent);
+    }
+
+    private void initKingOnBoard(int row, int col, ChessColor color) {
+        ChessComponent chessComponent = new KingChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        putChessOnBoard(chessComponent);
+    }
+
+    private void initPawnOnBoard(int row, int col, ChessColor color) {
+        ChessComponent chessComponent = new PawnChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        putChessOnBoard(chessComponent);
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

@@ -69,14 +69,12 @@ public class BishopChessComponent extends ChessComponent {
          * 否则：非法
          */
 
-        //设置flag标记
-        boolean firstflag = false;
 
         for (int i = -8; i <8 ; i++) {
-            //棋盘坐标系：将标准坐标系沿x轴翻折
+            //棋盘坐标系：将标准坐标系顺时针旋转90°
             //斜角判定，为了降低难度，即便计算值超出棋盘也没有关系，demo已经确保click不会记录超出棋盘的位置。
             //1 3象限斜角判定
-            //我们将判定两点间是否存在棋子集成到此处
+            //我们将*判定两点间是否存在棋子*集成到此处
             //NOTICE: 不要在此处判定落点是否含棋子！
             if(destination.getX()-i==source.getX()&&destination.getY()-i==source.getY()){
 
@@ -85,7 +83,6 @@ public class BishopChessComponent extends ChessComponent {
                 //若range为正，则说明source在destination的右上方，反之同理。指针永远从source朝destination移动。
                 int range = source.getX()- destination.getX();
                 if(range>0){
-
                     //特别地，若range==1，for代码块将自动跳过，表示落点恰好挨着棋子原点，无需判定。
                     for (int j = 1; j < range; j++) {
                         if(!(chessComponents[row-j][col-j] instanceof  EmptySlotComponent)){
