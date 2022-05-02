@@ -12,6 +12,10 @@ import java.util.List;
  * 这个类表示面板上的棋盘组件对象
  */
 public class Chessboard extends JComponent {
+    public ClickController getClickController() {
+        return clickController;
+    }
+
     /**
      * CHESSBOARD_SIZE： 棋盘是8 * 8的
      * <br>
@@ -26,7 +30,7 @@ public class Chessboard extends JComponent {
     private static final int CHESSBOARD_SIZE = 8;
 
     /**
-     * 棋盘坐标本身即记录了该坐标对应类型，使用例：
+     * 棋盘坐标本身即记录了该坐标对应棋子类型，使用例：
      * chessComponents[a][b] instanceof EmptySlotComponent
      * chessComponents[a][b] instanceof KingChessComponent
      *
@@ -43,10 +47,11 @@ public class Chessboard extends JComponent {
         return CHESS_SIZE;
     }
 
+    public int getCHESSBOARD_SIZE(){
+        return CHESSBOARD_SIZE;
+    }
+
     private final int CHESS_SIZE;
-
-
-
 
     public Chessboard(int width, int height) {
         setLayout(null); // Use absolute layout.
@@ -75,6 +80,10 @@ public class Chessboard extends JComponent {
         return currentColor;
     }
 
+    /**
+     * 该方法实现放置棋子，并以完全覆盖的方式放置。
+     * @param chessComponent
+     */
     public void putChessOnBoard(ChessComponent chessComponent) {
         int row = chessComponent.getChessboardPoint().getX(), col = chessComponent.getChessboardPoint().getY();
 
@@ -100,19 +109,6 @@ public class Chessboard extends JComponent {
         chess1.repaint();
         chess2.repaint();
     }
-    public void swapChessComponentsWithoutRepaint(ChessComponent chess1, ChessComponent chess2) {
-        // Note that chess1 has higher priority, 'destroys' chess2 if exists.
-        if (!(chess2 instanceof EmptySlotComponent)) {
-            remove(chess2);
-            add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
-        }
-        chess1.swapLocation(chess2);
-        int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
-        chessComponents[row1][col1] = chess1;
-        int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
-        chessComponents[row2][col2] = chess2;
-
-    }
 
     public void initiateEmptyChessboard() {
         for (int i = 0; i < chessComponents.length; i++) {
@@ -122,6 +118,9 @@ public class Chessboard extends JComponent {
         }
     }
 
+    /**
+     * 该方法实现交换执棋方。
+     */
     public void swapColor() {
         //黑方先走，每次走棋后换方
         currentColor = currentColor == ChessColor.BLACK ? ChessColor.WHITE : ChessColor.BLACK;
@@ -174,6 +173,11 @@ public class Chessboard extends JComponent {
         return new Point(col * CHESS_SIZE, row * CHESS_SIZE);
     }
 
+    /**
+     * 该方法实现棋盘数据载入
+     * FIXME:这里仅print出了你输入的内容。
+     * @param chessData 棋盘数据
+     */
     public void loadGame(List<String> chessData) {
         chessData.forEach(System.out::println);
     }

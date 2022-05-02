@@ -2,7 +2,9 @@ package view;
 
 /**
  * 这个类表示棋盘上的位置，如(0, 0), (0, 7)等等
- * 其中，左上角是(0, 0)，左下角是(7, 0)，右上角是(0, 7)，右下角是(7, 7)
+ * 其中，左上角是(0, 0)，左下角是(7, 0)，右上角是(0, 7)，右下角是(7, 7)<br>
+ * NOTICE:请区分Point类和该类
+ * @see java.awt.Point
  */
 public class ChessboardPoint {
     private int x, y;

@@ -43,6 +43,7 @@ public class History {
         this.srcY=srcY;
     }
 
+
     /**
      * 为避免重名
      */

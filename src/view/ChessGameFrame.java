@@ -7,6 +7,7 @@ import java.awt.*;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
+ * 该类将配合GameController与ClickController完成游戏的完整运行
  */
 public class ChessGameFrame extends JFrame {
     //    public final Dimension FRAME_SIZE ;
@@ -78,7 +79,7 @@ public class ChessGameFrame extends JFrame {
         button.addActionListener(e -> {
             System.out.println("Click load");
             String path = JOptionPane.showInputDialog(this,"Input Path here");
-            gameController.loadGameFromFile(path);
+            gameController.loadGameFromFile(path);//在该方法中完成文件的读取
         });
     }
 

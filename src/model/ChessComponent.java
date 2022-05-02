@@ -10,11 +10,13 @@ import java.io.IOException;
 
 /**
  * 这个类是一个抽象类，主要表示8*8棋盘上每个格子的棋子情况，当前有以下子类继承它，分别是
- * EmptySlotComponent(空棋子)、
- * RookChessComponent(车)、
- * BishopChessComponent(象)、
- * KnightChessComponent(马).
- * 以及其他3种棋子类型
+ * @see EmptySlotComponent 空白格（不是null！）
+ * @see RookChessComponent 车
+ * @see BishopChessComponent 象
+ * @see KnightChessComponent 马
+ * @see KingChessComponent 王
+ * @see PawnChessComponent 兵
+ * @see QueenChessComponent 后
  */
 public abstract class ChessComponent extends JComponent {
 
@@ -102,11 +104,11 @@ public abstract class ChessComponent extends JComponent {
     @Override
     protected void processMouseEvent(MouseEvent e) {
         super.processMouseEvent(e);
-
+        //getID 获取鼠标事件类型，详情请查阅MouseEvent类中的各项事件
         if (e.getID() == MouseEvent.MOUSE_PRESSED) {
             System.out.printf("Click [%d,%d]\n", chessboardPoint.getX(), chessboardPoint.getY());
 
-            //onClick方法在这里获取click位置
+            //onClick方法在这里被调用
             clickController.onClick(this);
         }
     }
