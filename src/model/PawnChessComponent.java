@@ -77,7 +77,20 @@ public class PawnChessComponent extends ChessComponent {
         super(chessboardPoint, location, color, listener, size);
         initiatePawnImage(color);
     }
-    public PawnChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor color, ClickController listener, int size,boolean firstBypass,boolean firstMove,boolean doubleMove,boolean bypass, ChessComponent bypassPawn){
+
+    public void setFirstMove(boolean firstMove) {
+        this.firstMove = firstMove;
+    }
+
+    public void setDoubleMove(boolean doubleMove) {
+        this.doubleMove = doubleMove;
+    }
+
+    public void setBypassPawn(ChessComponent bypassPawn) {
+        this.bypassPawn = bypassPawn;
+    }
+
+    public PawnChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor color, ClickController listener, int size, boolean firstBypass, boolean firstMove, boolean doubleMove, boolean bypass, ChessComponent bypassPawn){
         super(chessboardPoint, location, color, listener, size);
         initiatePawnImage(color);
         this.firstBypass=firstBypass;
@@ -153,7 +166,6 @@ public class PawnChessComponent extends ChessComponent {
                     if(Target.isDoubleMove()){
                         legalpoint = new ChessboardPoint(row-1,col-1);
                         bypassPawn = Target;
-                        bypass=true;
                         legalpoints.add(legalpoint);
                     }
                 }
@@ -170,7 +182,6 @@ public class PawnChessComponent extends ChessComponent {
                     if(Target.isDoubleMove()){
                         legalpoint = new ChessboardPoint(row-1,col+1);
                         bypassPawn = Target;
-                        bypass=true;
                         legalpoints.add(legalpoint);
                     }
                 }
@@ -204,7 +215,6 @@ public class PawnChessComponent extends ChessComponent {
                     if(Target.isDoubleMove()){
                         legalpoint = new ChessboardPoint(row+1,col+1);
                         bypassPawn = Target;
-                        bypass=true;
                         legalpoints.add(legalpoint);
                     }
                 }
@@ -219,7 +229,6 @@ public class PawnChessComponent extends ChessComponent {
                     if(Target.isDoubleMove()){
                         legalpoint = new ChessboardPoint(row+1,col-1);
                         bypassPawn = Target;
-                        bypass=true;
                         legalpoints.add(legalpoint);
                     }
                 }
@@ -235,6 +244,15 @@ public class PawnChessComponent extends ChessComponent {
                 if(destination.getX()==source.getX()+1||destination.getX()==source.getX()-1){
                     doubleMove=false;
                 }
+                //若为斜角行棋
+                if(destination.getX()!=source.getX()&&destination.getY()!=source.getY()){
+                    if(bypassPawn instanceof PawnChessComponent){
+                        bypass = true;
+                    }else{
+                        bypass = false;
+                    }
+                }
+
 
                 return true;
             }

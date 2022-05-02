@@ -1,19 +1,13 @@
 package controller;
 
-
-import jdk.javadoc.doclet.Taglet;
 import model.*;
 import view.Chessboard;
 import view.ChessboardPoint;
 
-import javax.sound.sampled.SourceDataLine;
 import java.awt.*;
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class ClickController {
-
-
 
     /**
      * 历史记录：
@@ -22,9 +16,7 @@ public class ClickController {
      */
     private static int historyCnt;
     private ArrayList<History> history = new ArrayList<>();
-    private History thisMove;
-
-
+    private static History thisMove;
 
     private final Chessboard chessboard;
     private ChessComponent first;
@@ -33,22 +25,41 @@ public class ClickController {
         this.chessboard = chessboard;
     }
 
-    public static void byPassOperation(ClickController listener,Chessboard chessboard,ChessComponent move,ChessComponent eaten){
+    /**
+     * 该方法若执行成功将返还一个被吃掉的棋子，否则返回null
+     * @param listener
+     * @param chessboard
+     * @param move
+     * @param eaten
+     * @return
+     */
+    public static ChessComponent byPassOperation(ClickController listener,Chessboard chessboard,ChessComponent move,ChessComponent eaten){
         if(move instanceof PawnChessComponent){
             ChessComponent target = ((PawnChessComponent) move).getBypassPawn();
             //isBypass用于判定该棋是否遭遇过路兵
-            if(((PawnChessComponent) move).isBypass()){
+            if(target instanceof PawnChessComponent){
+                if(((PawnChessComponent) move).isBypass()){
 
 
-                //在这里记录死亡过路兵
-                eaten = target;
-                ChessComponent empty;
-                chessboard.remove(target);
-                chessboard.add(empty=new EmptySlotComponent(target.getChessboardPoint(),target.getLocation(),listener,chessboard.getCHESS_SIZE()));
-                ((PawnChessComponent) move).setBypass(false);
-                target.repaint();//TODO:啥叫repaint
+                    //在这里记录死亡过路兵,进行移除被吃子操作
+                    eaten = createCopy(chessboard,target);
+
+                    ChessComponent empty;
+                    chessboard.remove(target);
+
+                    ChessboardPoint emptyBoardPoint = new ChessboardPoint(target.getChessboardPoint().getX(),target.getChessboardPoint().getY());
+                    Point emptylocation = new Point(target.getX(),target.getY());
+                    chessboard.add(empty=new EmptySlotComponent(emptyBoardPoint,emptylocation,listener,chessboard.getCHESS_SIZE()));
+                    chessboard.getChessComponents()[empty.getChessboardPoint().getX()][empty.getChessboardPoint().getY()]=empty;
+
+                    ((PawnChessComponent) move).setBypass(false);
+                    target.repaint();
+                    return eaten;
+                }
             }
+
         }
+        return null;
     }
 
     /*
@@ -91,7 +102,6 @@ public class ClickController {
      *  该方法用于判定指定方的王在调用该方法时是否被将军
      *  也可用于判断该次走棋是否合规，若走棋后仍被将军，该次走棋违规，回退至走棋前。
      *  由于棋盘的唯一性，我们只能通过先真实地执行棋子移动(但不播放动画)，判定将军，若违规，则回退，否则合规并播放动画(repaint)。
-     *  我们首先需要引入回退(悔棋)。
      */
     public static boolean isCheck(Chessboard chessboard, ChessColor chessColor){
         for (int i = 0; i < 8; i++) {
@@ -126,7 +136,7 @@ public class ClickController {
     /**
      * 该方法用于安全创建深拷贝棋子
      * 使用时机：
-     * 当希望拷贝一枚棋子对象 chess1 并不希望改变 chess1 的属性时，请调用createCopy方法拷贝，该方法将返回一个对input棋子的安全拷贝对象。
+     * 当希望拷贝一枚棋子对象 chess1 并且不希望 将 拷贝 与 chess1 的属性链接起来时，请调用createCopy方法拷贝，该方法将返回一个对input棋子的安全拷贝对象。
      * 请注意，若对某一棋子新增了某些属性时，请务必在对应棋子的构造方法中添加这个属性，并修改createCopy方法中对应部分，否则无法正确拷贝对象，详情请查阅方法内容。
      * @param chessboard
      * @param input
@@ -189,9 +199,9 @@ public class ClickController {
      * 该方法实现悔棋
      * 注意传入的historyCnt按照我们的定义来使用
      */
-    public static void undo(Chessboard chessboard,ArrayList<History> history,ChessComponent move){
-        if(false){
-            //异常
+    public static void undo(Chessboard chessboard, ArrayList<History> history, ChessComponent move, ChessComponent bypassEaten){
+        if(historyCnt<=0){
+            return;
         }else{
 
             int srcX = history.get(historyCnt-1).getSrcX();
@@ -212,9 +222,16 @@ public class ClickController {
                 chessboard.putChessOnBoard(dead);
                 dead.repaint();
             }
+            if(move instanceof PawnChessComponent){
+                if(!((PawnChessComponent) move).isFirstMove()){
+                    ((PawnChessComponent) src).setFirstMove(true);
+                }
+                if(!((PawnChessComponent) move).isDoubleMove()){
+                    ((PawnChessComponent) src).setDoubleMove(true);
+                }
+            }
             empty.repaint();
             src.repaint();
-
 
             history.remove(historyCnt-1);
             historyCnt--;
@@ -222,6 +239,30 @@ public class ClickController {
 
             chessboard.swapColor();
         }
+    }
+
+    public static void inputHistory(Chessboard chessboard,ArrayList<History> history,ChessComponent first,ChessComponent target,ChessComponent bypassEaten){
+        //死亡棋子记录
+        ChessComponent deadChess1 = null;
+
+        if(!(target instanceof EmptySlotComponent)){
+            deadChess1 = createCopy(chessboard,target);
+        }
+        if(target instanceof EmptySlotComponent){
+            deadChess1 = createCopy(chessboard,target);//死亡了一个空棋子，位置为该次移动的终点
+            //检查若为吃过路兵的情况
+            if(bypassEaten!=null){
+                deadChess1 = createCopy(chessboard, bypassEaten);
+            }
+
+        }
+
+        ChessComponent thischess = createCopy(chessboard,first);
+        thisMove = new History(chessboard.getCurrentColor(),thischess,deadChess1,
+                deadChess1.getChessboardPoint().getX(),deadChess1.getChessboardPoint().getY(),
+                thischess.getChessboardPoint().getX(),thischess.getChessboardPoint().getY());
+        history.add(thisMove);
+        historyCnt++;
     }
 
     public void onClick(ChessComponent chessComponent) {
@@ -244,36 +285,41 @@ public class ClickController {
                 //这里为demo唯一进行吃棋行为的地方，请尽可能不要在其他地方实现吃子行为。
                 //demo实现逻辑是：if(该次走棋合法): then(swapChessComponents)
 
-                //死亡棋子记录
-                ChessComponent deadChess = null;
-                if(!(chessComponent instanceof EmptySlotComponent)){
-                    deadChess = createCopy(chessboard,chessComponent);
-                }
-                if(chessComponent instanceof EmptySlotComponent){
-                    deadChess = createCopy(chessboard,chessComponent);
-                }
+
 
                 //吃过路兵检测
-                byPassOperation(this,chessboard,first,chessComponent);
-
-
-                //录入
-                ChessComponent thischess = createCopy(chessboard,first);
-                thisMove = new History(chessboard.getCurrentColor(),thischess,deadChess,deadChess.getChessboardPoint().getX(),deadChess.getChessboardPoint().getY(),thischess.getChessboardPoint().getX(),thischess.getChessboardPoint().getY());
-                history.add(thisMove);
-                //计数器加1，指针向后移动一位。
-                //注意这意味着historyCnt永远指向列表中最后一项的下一项，直接调用history.set(historyCnt)等类似方法会引起空指针异常或越界。
-                historyCnt++;
+                ChessComponent bypassEaten = null;
+                ;
+                if(first instanceof PawnChessComponent){
+                    System.out.println(((PawnChessComponent) first).isBypass());
+                    if(((PawnChessComponent) first).isBypass()){
+                        bypassEaten = createCopy(chessboard,byPassOperation(this,chessboard,first,chessComponent));
+                    }
+                }
+//                //录入
+//                ChessComponent thischess = createCopy(chessboard,first);
+//                thisMove = new History(chessboard.getCurrentColor(),thischess,deadChess,deadChess.getChessboardPoint().getX(),deadChess.getChessboardPoint().getY(),thischess.getChessboardPoint().getX(),thischess.getChessboardPoint().getY());
+//                history.add(thisMove);
+//                //计数器加1，指针向后移动一位。
+//                //注意这意味着historyCnt永远指向列表中最后一项的下一项，直接调用history.set(historyCnt)等类似方法会引起空指针异常或越界。
+//                historyCnt++;
+                inputHistory(chessboard,history,first,chessComponent,bypassEaten);
+                bypassEaten = null;
 
                 //repaint in swap chess method.
                 chessboard.swapChessComponents(first, chessComponent);
                 //change side
                 chessboard.swapColor();
 
-                //FIXME: 悔棋方法测试：若可行，在吃棋后行棋立即自动悔棋，程序中表现为进行吃棋后红圈自动消失
-                if(! (history.get(historyCnt-1).getDeadChess() instanceof EmptySlotComponent)){
-                    undo(chessboard,history,first);
-                }
+
+//                if(! (history.get(historyCnt-1).getDeadChess() instanceof EmptySlotComponent)){
+//                    //悔棋方法测试：若可行，在吃棋后行棋立即自动悔棋，程序中表现为进行吃棋后红圈自动消失，该次行棋无效。
+//                    System.out.println((history.get(historyCnt-1).getDeadChess() instanceof PawnChessComponent));
+//                    undo(chessboard,history,first,bypassEaten);
+//                }
+
+                System.out.println((history.get(historyCnt-1).getDeadChess() instanceof PawnChessComponent));
+
                 //reset the first (selected chess)
                 first.setSelected(false);
                 first = null;
