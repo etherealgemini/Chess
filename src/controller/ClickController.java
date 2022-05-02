@@ -8,6 +8,7 @@ import view.ChessboardPoint;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static controller.History.inputHistory;
 import static controller.task3function.*;
 
 public class ClickController {
@@ -19,7 +20,7 @@ public class ClickController {
      */
     static int historyCnt;
     private ArrayList<History> history = new ArrayList<>();
-    private static History thisMove;
+
 
     private final Chessboard chessboard;
 
@@ -29,37 +30,6 @@ public class ClickController {
         this.chessboard = chessboard;
     }
 
-    /**
-     * @see History
-     * @param chessboard 棋盘
-     * @param history 历史记录列表
-     * @param first 被选中的棋子
-     * @param target 目标位置棋子（包括空棋） notnull
-     * @param bypassEaten 吃过路兵检测
-     */
-    public static void inputHistory(Chessboard chessboard,ArrayList<History> history,ChessComponent first,ChessComponent target,ChessComponent bypassEaten){
-        //死亡棋子记录
-        ChessComponent deadChess1 = null;
-
-        if(!(target instanceof EmptySlotComponent)){
-            deadChess1 = createCopy(chessboard,target);
-        }
-        if(target instanceof EmptySlotComponent){
-            deadChess1 = createCopy(chessboard,target);//死亡了一个空棋子，位置为该次移动的终点
-            //检查若为吃过路兵的情况
-            if(bypassEaten!=null){
-                deadChess1 = createCopy(chessboard, bypassEaten);
-            }
-
-        }
-
-        ChessComponent thischess = createCopy(chessboard,first);
-        thisMove = new History(chessboard.getCurrentColor(),thischess,deadChess1,
-                deadChess1.getChessboardPoint().getX(),deadChess1.getChessboardPoint().getY(),
-                thischess.getChessboardPoint().getX(),thischess.getChessboardPoint().getY());
-        history.add(thisMove);
-        historyCnt++;
-    }
 
     /**
      * 该方法实现响应针对棋盘上发生的鼠标点击事件
