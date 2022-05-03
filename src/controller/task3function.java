@@ -10,10 +10,15 @@ import java.util.ArrayList;
 import static controller.ClickController.historyCnt;
 
 /**
- * 该类为工具类，实现task3相关的所有功能，提供静态方法。
+ * 该类为工具类，实现task3相关的所有功能，提供静态方法。<br>
+ * 请不要对该类在该类外的地方进行任何的实例化操作！
  */
 
 public class task3function {
+    /**
+     * 防止可能出现的实例化操作。
+     */
+    private task3function(){}
 
     /**
      * 该方法实现吃过路兵，若执行成功将返还一个被吃掉的棋子，否则返回null
@@ -224,6 +229,9 @@ public class task3function {
      * 该方法实现判定对指定方的将死检测2：能否通过吃将指定方的军的棋子来脱离将军
      */
     public static boolean canEat(Chessboard chessboard, ChessColor chessColor,ArrayList<ChessComponent> checkChesses){
+        if(checkChesses==null){
+            return false;
+        }
         if(checkChesses.size()>=2){
             //一旦有两个棋子将军，该方法必然失效
             return false;
@@ -252,6 +260,9 @@ public class task3function {
      * 该方法实现判定对指定方的将死检测3：能否挡将。
      */
     public static boolean canBlock(Chessboard chessboard, ChessColor chessColor,ArrayList<ChessComponent> checkChesses){
+        if(checkChesses==null){
+            return false;
+        }
         if(checkChesses.size()>=2){
             //一旦有两个棋子将军，该方法必然失效
             return false;
@@ -372,6 +383,29 @@ public class task3function {
         }
         //不可能运行到此处
         System.out.println("Unknown Exception");
+        return false;
+    }
+
+    /**
+     * 该方法实现对指定行棋方的全部将死判定，已经集成了将军判定。
+     * @param chessboard 棋盘
+     * @param chessColor 指定行棋方
+     * @return 指定行棋方是否被将军
+     */
+    public static boolean isCheckMate(Chessboard chessboard,ChessColor chessColor){
+        ChessColor enemyColor = chessColor;
+        boolean enemyIsCheckAfterMove = isCheck(chessboard,enemyColor);
+        if(enemyIsCheckAfterMove){
+            //将死判定
+            ArrayList<ChessComponent> checkChess = findCheckChess(chessboard,enemyColor);
+            if(canMoveKing(chessboard,enemyColor)||canEat(chessboard,enemyColor,checkChess)||canBlock(chessboard,enemyColor,checkChess)){
+                //若三种方法任意一种通过，则不被将死，否则立即判负。
+                return false;
+            }else{
+                return true;
+            }
+        }
+        //如果该方没有被将军，那么自然不会被将死。
         return false;
     }
 

@@ -11,14 +11,16 @@ import java.util.ArrayList;
 import static controller.History.inputHistory;
 import static controller.task3function.*;
 
+
 public class ClickController {
 
     /**
-     * 历史记录：
      * int 历史记录指针
-     * Arraylist 历史记录列表，同时实现了回合数记录。
      */
     static int historyCnt;
+    /**
+     * Arraylist 历史记录列表
+     */
     private ArrayList<History> history = new ArrayList<>();
 
 
@@ -60,7 +62,7 @@ public class ClickController {
                 //吃过路兵检测
                 ChessComponent bypassEaten = null;
                 if(first instanceof PawnChessComponent){
-                    System.out.println(((PawnChessComponent) first).isBypass());
+//                    System.out.println(((PawnChessComponent) first).isBypass());
                     if(((PawnChessComponent) first).isBypass()){
                         bypassEaten = createCopy(chessboard,byPassOperation(this,chessboard,first,chessComponent));
                     }
@@ -73,29 +75,21 @@ public class ClickController {
                 //repaint in swap chess method.
                 chessboard.swapChessComponents(first, chessComponent);
 
-                //change side
-                chessboard.swapColor();
-
-                // 在这里执行检测：若移动后被将军，则该次移动非法
-                // 第二个参数为取反，因为上面执行了一次换方
-                boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor()==ChessColor.BLACK?ChessColor.WHITE:ChessColor.BLACK);
+                // 在这里执行将军相关的操作合法性检测：若移动后被将军，则该次移动非法，执行悔棋操作回退。
+                boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
                 if(isCheckAfterMove){
                     undo(chessboard,history,first);
                 }
 
-                boolean enemyIsCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
-                if(enemyIsCheckAfterMove){
-                    //TODO:请在这里进行将死判定
+                //change side 更换行棋方
+                chessboard.swapColor();
+
+                // 在这里执行将死判定。注意此时已经更换行棋方了
+                ChessColor enemyColor = chessboard.getCurrentColor();
+                if(isCheckMate(chessboard,enemyColor)){
+                    //TODO:在这里发生将死后的事件
+                    System.out.println(enemyColor+" is defeated!");
                 }
-
-
-//                if(! (history.get(historyCnt-1).getDeadChess() instanceof EmptySlotComponent)){
-//                    //悔棋方法测试：若可行，在吃棋后行棋立即自动悔棋，程序中表现为进行吃棋后红圈自动消失，该次行棋无效。
-//                    System.out.println((history.get(historyCnt-1).getDeadChess() instanceof PawnChessComponent));
-//                    undo(chessboard,history,first,bypassEaten);
-//                }
-
-//                System.out.println((history.get(historyCnt-1).getDeadChess() instanceof PawnChessComponent));
 
                 //reset the first (selected chess)
                 first.setSelected(false);
