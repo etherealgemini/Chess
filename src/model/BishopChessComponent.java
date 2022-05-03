@@ -56,6 +56,9 @@ public class BishopChessComponent extends ChessComponent {
      */
 
     @Override
+    /**
+     * @Fixme 请按照其他棋子的方式将合法落子点存入arraylist中
+     */
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         //获取棋子所在棋盘点
         //注意destination为该方法调用时即传入的数据
@@ -75,7 +78,6 @@ public class BishopChessComponent extends ChessComponent {
             //斜角判定，为了降低难度，即便计算值超出棋盘也没有关系，demo已经确保click不会记录超出棋盘的位置。
             //1 3象限斜角判定
             //我们将*判定两点间是否存在棋子*集成到此处
-            //NOTICE: 不要在此处判定落点是否含棋子！
             if(destination.getX()-i==source.getX()&&destination.getY()-i==source.getY()){
 
                 int row = source.getX();
@@ -126,7 +128,7 @@ public class BishopChessComponent extends ChessComponent {
                     //同样地，range==-1将跳过。
                     //向右下方移动
                     for (int j = range; j < -1; j++) {
-                        System.out.println("j="+j+" row="+row+" col="+col);
+//                        System.out.println("j="+j+" row="+row+" col="+col);
                         if(!(chessComponents[row-j][col+j] instanceof  EmptySlotComponent)){
                             return false;
                         }

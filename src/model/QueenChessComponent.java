@@ -67,6 +67,9 @@ public class QueenChessComponent extends ChessComponent {
      */
 
     @Override
+    /**
+     * @Fixme 请按照其他棋子的方式将合法落子点存入arraylist中
+     */
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
         /**

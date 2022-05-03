@@ -126,6 +126,11 @@ public class KingChessComponent extends ChessComponent {
             legalpoint=new ChessboardPoint(row,col-1);
             legalpoints.add(legalpoint);
         }
+        for (int i = 0; i < legalpoints.size(); i++) {
+            if(chessComponents[legalpoints.get(i).getX()][legalpoints.get(i).getY()].getChessColor()==chessColor){
+                legalpoints.remove(i);
+            }
+        }
 
         //以下为王车易位判定
         //check1:对是否为首次移动判定
@@ -150,12 +155,6 @@ public class KingChessComponent extends ChessComponent {
         boolean whiteShortCastlingCheck1 = isKingFirstMove()&&(chessComponents[7][7] instanceof RookChessComponent && ((RookChessComponent) chessComponents[7][7]).isRookFirstMove());
         boolean whiteLongCastlingCheck1 = isKingFirstMove()&&(chessComponents[7][0] instanceof RookChessComponent && ((RookChessComponent) chessComponents[7][0]).isRookFirstMove());
 
-        if(kingImage==KING_BLACK){
-
-        }
-        if(kingImage==KING_WHITE){
-
-        }
 
         for (int i = 0; i < legalpoints.size(); i++) {
             if(legalpoints.get(i).getX()==destination.getX()&&legalpoints.get(i).getY()==destination.getY()){

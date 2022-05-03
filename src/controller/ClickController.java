@@ -69,8 +69,9 @@ public class ClickController {
                 }
 
                 //录入历史记录
-                inputHistory(chessboard,history,first,chessComponent,bypassEaten);
-                bypassEaten = null;
+                ChessComponent firstCopy = createCopy(chessboard,first);
+                ChessComponent chessComponentCopy = createCopy(chessboard,chessComponent);
+                inputHistory(chessboard,history,firstCopy,chessComponentCopy,bypassEaten);bypassEaten = null;
 
                 //repaint in swap chess method.
                 chessboard.swapChessComponents(first, chessComponent);
@@ -78,6 +79,7 @@ public class ClickController {
                 // 在这里执行将军相关的操作合法性检测：若移动后被将军，则该次移动非法，执行悔棋操作回退。
                 boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
                 if(isCheckAfterMove){
+                    System.out.println("evoke undo");
                     undo(chessboard,history,first);
                 }
 
@@ -85,7 +87,9 @@ public class ClickController {
                 chessboard.swapColor();
 
                 // 在这里执行将死判定。注意此时已经更换行棋方了
-                ChessColor enemyColor = chessboard.getCurrentColor();
+                ChessColor enemyColor = chessboard.getCurrentColor()==ChessColor.BLACK?ChessColor.WHITE:ChessColor.BLACK;
+
+                System.out.println(enemyColor);
                 if(isCheckMate(chessboard,enemyColor)){
                     //TODO:在这里发生将死后的事件
                     System.out.println(enemyColor+" is defeated!");

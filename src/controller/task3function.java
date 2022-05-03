@@ -148,11 +148,12 @@ public class task3function {
                     for (int k = 0; k < chessboard.getCHESSBOARD_SIZE(); k++) {
                         for (int l = 0; l < chessboard.getCHESSBOARD_SIZE(); l++) {
                             ChessComponent chess2 = chessboard.getChessComponents()[k][l];
-                            if(chess1.canMoveTo(chessboard.getChessComponents(),chess2.getChessboardPoint())){
+                            //注意 canMoveTo没有实现吃友方兵的排除
+                            if(chess1.canMoveTo(chessboard.getChessComponents(),chess2.getChessboardPoint())&&chess2.getChessColor()!=chessColor){
                                 ChessComponent mightDead = null;
-                                if(!(chess2 instanceof EmptySlotComponent)){
+
                                     mightDead = createCopy(chessboard,chess2);
-                                }
+
                                 chessboard.swapChessComponents(chess1,chess2);
 
                                 if(isCheck(chessboard,chessColor)){
@@ -164,10 +165,11 @@ public class task3function {
                                     continue;
                                 }else{
                                     //方法成功，恢复棋盘
+                                    System.out.println("evoke else");
                                     chessboard.swapChessComponents(chess1,chess2);
-                                    if(mightDead!=null){
+
                                         chessboard.putChessOnBoard(mightDead);
-                                    }
+
                                     return true;
                                 }
 
@@ -495,24 +497,28 @@ public class task3function {
             chessboard.remove(move);
             chessboard.putChessOnBoard(empty);
             chessboard.getChessComponents()[empty.getChessboardPoint().getX()][empty.getChessboardPoint().getY()]=empty;
-            if(!(dead instanceof EmptySlotComponent)){
-                chessboard.putChessOnBoard(dead);
-                dead.repaint();
-            }
-            if(move instanceof PawnChessComponent){
-                if(!((PawnChessComponent) move).isFirstMove()){
-                    ((PawnChessComponent) src).setFirstMove(true);
-                }
-                if(!((PawnChessComponent) move).isDoubleMove()){
-                    ((PawnChessComponent) src).setDoubleMove(true);
-                }
-            }
-            empty.repaint();
-            src.repaint();
+//            if(!(dead instanceof EmptySlotComponent)){
+//                chessboard.putChessOnBoard(dead);
+////                System.out.println("evoke dead");
+////                dead.repaint();
+//            }
+//            if(move instanceof PawnChessComponent){
+//                if(!((PawnChessComponent) move).isFirstMove()){
+//                    ((PawnChessComponent) src).setFirstMove(true);
+//                }
+//                if(!((PawnChessComponent) move).isDoubleMove()){
+//                    ((PawnChessComponent) src).setDoubleMove(true);
+//                }
+//            }
+
+            System.out.println();
+            System.out.println("src: "+srcX+" "+srcY );
+//            empty.repaint();
+//            src.repaint();
 
             history.remove(historyCnt-1);
             historyCnt--;
-            System.out.println(historyCnt);
+//            System.out.println(historyCnt);
 
             chessboard.swapColor();
         }
