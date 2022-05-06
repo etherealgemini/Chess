@@ -84,86 +84,9 @@ public class KingChessComponent extends ChessComponent {
      */
 
     @Override
-    public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
-        ChessboardPoint source = getChessboardPoint();
-        /**
-         * 列举出所有的合法落子
-         */
-        ArrayList<ChessboardPoint> legalpoints = new ArrayList<>();
-        ChessboardPoint legalpoint = null;
-        int row = source.getX();
-        int col = source.getY();
-        //以下为一般落子判定
-        if(row+1<=7){
-            legalpoint=new ChessboardPoint(row+1,col);
-            legalpoints.add(legalpoint);
-            if(col+1<=7){
-                legalpoint=new ChessboardPoint(row+1,col+1);
-                legalpoints.add(legalpoint);
-            }
-            if(col-1>=0){
-                legalpoint=new ChessboardPoint(row+1,col-1);
-                legalpoints.add(legalpoint);
-            }
-        }
-        if(row-1>=0){
-            legalpoint=new ChessboardPoint(row-1,col);
-            legalpoints.add(legalpoint);
-            if(col+1<=7){
-                legalpoint=new ChessboardPoint(row-1,col+1);
-                legalpoints.add(legalpoint);
-            }
-            if(col-1>=0){
-                legalpoint=new ChessboardPoint(row-1,col-1);
-                legalpoints.add(legalpoint);
-            }
-        }
-        if(col+1<=7){
-            legalpoint=new ChessboardPoint(row,col+1);
-            legalpoints.add(legalpoint);
-        }
-        if(col-1<=0){
-            legalpoint=new ChessboardPoint(row,col-1);
-            legalpoints.add(legalpoint);
-        }
-        for (int i = 0; i < legalpoints.size(); i++) {
-            if(chessComponents[legalpoints.get(i).getX()][legalpoints.get(i).getY()].getChessColor()==chessColor){
-                legalpoints.remove(i);
-            }
-        }
-
-        //以下为王车易位判定
-        //check1:对是否为首次移动判定
-        boolean blackShortCastlingCheck1 = isKingFirstMove()&& (chessComponents[0][7] instanceof RookChessComponent && ((RookChessComponent) chessComponents[0][7]).isRookFirstMove());
-        boolean blackLongCastlingCheck1 = isKingFirstMove()&&(chessComponents[0][0] instanceof RookChessComponent && ((RookChessComponent) chessComponents[0][0]).isRookFirstMove());
-        //check2:越子判定
-        boolean blackShortCastlingCheck2 = true;
-        boolean blackLongCastlingCheck2 = true;
-        for (int i = 1; i < 4; i++) {
-            if(!(chessComponents[0][i] instanceof EmptySlotComponent)){
-                blackLongCastlingCheck2 = false;
-            }
-        }
-        for (int i = 1; i < 3; i++) {
-            if(!(chessComponents[0][7-i] instanceof EmptySlotComponent)){
-                blackShortCastlingCheck2 = false;
-            }
-        }
-        //check3:
-
-        //白方：
-        boolean whiteShortCastlingCheck1 = isKingFirstMove()&&(chessComponents[7][7] instanceof RookChessComponent && ((RookChessComponent) chessComponents[7][7]).isRookFirstMove());
-        boolean whiteLongCastlingCheck1 = isKingFirstMove()&&(chessComponents[7][0] instanceof RookChessComponent && ((RookChessComponent) chessComponents[7][0]).isRookFirstMove());
-
-
-        for (int i = 0; i < legalpoints.size(); i++) {
-            if(legalpoints.get(i).getX()==destination.getX()&&legalpoints.get(i).getY()==destination.getY()){
-                kingFirstMove = false;
-                return true;
-            }
-        }
-
-        return false;
+    public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination){
+        //wait until the ass5 over. I have already done the method, and I will move back when the ass5 is over.
+        return true;
     }
 
     /**
