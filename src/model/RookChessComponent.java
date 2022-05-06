@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * 这个类表示国际象棋里面的车
@@ -82,31 +83,73 @@ public class RookChessComponent extends ChessComponent {
      */
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
-        if (source.getX() == destination.getX()) {
-            //若在同一行:
-            //NOTICE: 此处row为竖行，而非横行！
-            int row = source.getX();
-            //检索该行中*由棋子位置*到*落点位置*之间是否存在棋子，若存在则该次移动非法，即*检测是否越过棋子移动*
-            for (int col = Math.min(source.getY(), destination.getY()) + 1;
-                 col < Math.max(source.getY(), destination.getY()); col++) {
+        ArrayList<ChessboardPoint> legalpoints = new ArrayList<>();
+        ChessboardPoint legalpoint = new ChessboardPoint(0,0);
 
-                if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
-                    return false;
+
+        //若在同一行:
+        //NOTICE: 此处row为竖行，而非横行！
+        int row = source.getX();
+        int col = source.getY();
+        boolean isCrossRowUp = false;
+        boolean isCrossRowDown = false;
+        boolean isCrossColUp = false;
+        boolean isCrossColDown = false;
+        for (int i = 1; i < 8; i++) {
+            if(!isCrossRowUp&&row-i>=0){
+                if(!(chessComponents[row-i][col] instanceof  EmptySlotComponent)) {
+                    if ((chessComponents[row - i][col].getChessColor() != chessColor)) {
+                        legalpoint = new ChessboardPoint(row - i, col);
+                        legalpoints.add(legalpoint);
+                    }
+                    isCrossRowUp=true;
                 }
+                legalpoint = new ChessboardPoint(row - i, col);
+                legalpoints.add(legalpoint);
             }
-        } else if (source.getY() == destination.getY()) {
-            int col = source.getY();
-            for (int row = Math.min(source.getX(), destination.getX()) + 1;
-                 row < Math.max(source.getX(), destination.getX()); row++) {
-                if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
-                    return false;
+            if(!isCrossRowDown&&row+i<=7){
+                if(!(chessComponents[row+i][col] instanceof  EmptySlotComponent)) {
+                    if ((chessComponents[row + i][col].getChessColor() != chessColor)) {
+                        legalpoint = new ChessboardPoint(row + i, col);
+                        legalpoints.add(legalpoint);
+                    }
+                    isCrossRowDown=true;
                 }
+                legalpoint = new ChessboardPoint(row + i, col);
+                legalpoints.add(legalpoint);
             }
-        } else { // Not on the same row or the same column.
-            return false;
+            if(!isCrossColUp&&col-i>=0){
+                if(!(chessComponents[row][col-i] instanceof  EmptySlotComponent)) {
+                    if ((chessComponents[row][col-i].getChessColor() != chessColor)) {
+                        legalpoint = new ChessboardPoint(row, col-i);
+                        legalpoints.add(legalpoint);
+                    }
+                    isCrossColUp=true;
+                }
+                legalpoint = new ChessboardPoint(row, col-i);
+                legalpoints.add(legalpoint);
+            }
+            if(!isCrossColDown&&col+i<=7){
+                if(!(chessComponents[row][col+i] instanceof  EmptySlotComponent)) {
+                    if ((chessComponents[row][col+i].getChessColor() != chessColor)) {
+                        legalpoint = new ChessboardPoint(row, col+i);
+                        legalpoints.add(legalpoint);
+                    }
+                    isCrossColDown=true;
+                }
+                legalpoint = new ChessboardPoint(row, col+i);
+                legalpoints.add(legalpoint);
+            }
         }
+
+        for (int i = 0; i < legalpoints.size(); i++) {
+            if(destination.getX()==legalpoints.get(i).getX()&&destination.getY()==legalpoints.get(i).getY()){
+                return true;
+            }
+        }
+
         rookFirstMove = false;
-        return true;
+        return false;
     }
 
     /**

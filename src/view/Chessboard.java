@@ -62,10 +62,10 @@ public class Chessboard extends JComponent {
         initiateEmptyChessboard();
 
         // FIXME: Initialize chessboard for testing only.
-        initPawnOnBoard(0, 0, ChessColor.BLACK);
-        initPawnOnBoard(0, CHESSBOARD_SIZE - 1, ChessColor.BLACK);
-        initPawnOnBoard(CHESSBOARD_SIZE-1, 1, ChessColor.WHITE);
-        initPawnOnBoard(CHESSBOARD_SIZE - 1, CHESSBOARD_SIZE - 1, ChessColor.WHITE);
+        initQueenOnBoard(0, 0, ChessColor.BLACK);
+        initQueenOnBoard(0, CHESSBOARD_SIZE - 1, ChessColor.BLACK);
+        initQueenOnBoard(CHESSBOARD_SIZE-1, 1, ChessColor.WHITE);
+        initQueenOnBoard(CHESSBOARD_SIZE - 1, CHESSBOARD_SIZE - 1, ChessColor.WHITE);
         initRookOnBoard(0, 1, ChessColor.BLACK);
         initRookOnBoard(0, CHESSBOARD_SIZE - 2, ChessColor.BLACK);
         initRookOnBoard(CHESSBOARD_SIZE - 2, 0, ChessColor.WHITE);
