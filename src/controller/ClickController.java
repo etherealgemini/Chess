@@ -40,6 +40,7 @@ public class ClickController {
     public void onClick(ChessComponent chessComponent) {
         if (first == null) {
             if (handleFirst(chessComponent)) {
+                System.out.println("evoke handle first");
                 chessComponent.setSelected(true);
                 first = chessComponent;
                 first.repaint();

@@ -133,6 +133,12 @@ public class KnightChessComponent extends ChessComponent {
                 i--;
             }
         }
+        for (int i = 0; i < legalpoints.size(); i++) {
+            if(chessComponents[legalpoints.get(i).getX()][legalpoints.get(i).getY()].getChessColor()==chessColor){
+                legalpoints.remove(i);
+                i--;
+            }
+        }
         //实现检索是否落点位置在合法点位，同样地，不需要进行落点处是否有子的判定
         //特别地，马是可以越子步进的。
         for (int i = 0; i < legalpoints.size(); i++) {

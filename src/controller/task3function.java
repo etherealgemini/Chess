@@ -32,7 +32,7 @@ public class task3function {
         if(move instanceof PawnChessComponent){
             ChessComponent target = ((PawnChessComponent) move).getBypassPawn();
             //isBypass用于判定该棋是否遭遇过路兵
-            if(target instanceof PawnChessComponent){
+            if(target instanceof PawnChessComponent&&target.getChessColor()!=move.getChessColor()){
                 if(((PawnChessComponent) move).isBypass()){
 
 
@@ -150,7 +150,7 @@ public class task3function {
                     for (int k = 0; k < chessboard.getCHESSBOARD_SIZE(); k++) {
                         for (int l = 0; l < chessboard.getCHESSBOARD_SIZE(); l++) {
                             ChessComponent chess2 = chessboard.getChessComponents()[k][l];
-                            //注意 canMoveTo没有实现吃友方兵的排除
+
                             if(chess1.canMoveTo(chessboard.getChessComponents(),chess2.getChessboardPoint())&&chess2.getChessColor()!=chessColor){
                                 ChessComponent mightDead = null;
 
@@ -170,7 +170,7 @@ public class task3function {
                                     System.out.println("evoke else");
                                     chessboard.swapChessComponents(chess1,chess2);
 
-                                        chessboard.putChessOnBoard(mightDead);
+                                    chessboard.putChessOnBoard(mightDead);
 
                                     return true;
                                 }
@@ -501,19 +501,6 @@ public class task3function {
 //            chessboard.remove(his);
             chessboard.putChessOnBoard(empty);
             chessboard.getChessComponents()[empty.getChessboardPoint().getX()][empty.getChessboardPoint().getY()]=empty;
-//            if(!(dead instanceof EmptySlotComponent)){
-//                chessboard.putChessOnBoard(dead);
-////                System.out.println("evoke dead");
-////                dead.repaint();
-//            }
-//            if(move instanceof PawnChessComponent){
-//                if(!((PawnChessComponent) move).isFirstMove()){
-//                    ((PawnChessComponent) src).setFirstMove(true);
-//                }
-//                if(!((PawnChessComponent) move).isDoubleMove()){
-//                    ((PawnChessComponent) src).setDoubleMove(true);
-//                }
-//            }
 
             System.out.println();
             System.out.println("src: "+srcX+" "+srcY );

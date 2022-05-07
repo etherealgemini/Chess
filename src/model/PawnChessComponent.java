@@ -166,7 +166,7 @@ public class PawnChessComponent extends ChessComponent {
                 //若左方有兵
                 if(instanceBypass && chessComponents[row][col-1] instanceof PawnChessComponent){
                     Target = (PawnChessComponent) chessComponents[row][col-1];
-                    if(Target.isDoubleMove()){
+                    if(Target.isDoubleMove()&&this.getChessColor()!=Target.getChessColor()){
                         legalpoint = new ChessboardPoint(row-1,col-1);
                         bypassPawn = Target;
                         legalpoints.add(legalpoint);
@@ -182,7 +182,7 @@ public class PawnChessComponent extends ChessComponent {
                 }
                 if(instanceBypass &&  chessComponents[row][col+1] instanceof PawnChessComponent){
                     Target = (PawnChessComponent) chessComponents[row][col+1];
-                    if(Target.isDoubleMove()){
+                    if(Target.isDoubleMove()&&this.getChessColor()!=Target.getChessColor()){
                         legalpoint = new ChessboardPoint(row-1,col+1);
                         bypassPawn = Target;
                         legalpoints.add(legalpoint);
@@ -191,7 +191,7 @@ public class PawnChessComponent extends ChessComponent {
             }
 //            if(chessComponents[row][col+1] instanceof PawnChessComponent){
 //                PawnChessComponent Target = (PawnChessComponent) chessComponents[row][col+1];
-//                if(Target.isDoubleMove()){
+//                if(Target.isDoubleMove()&&this.getChessColor()!=Target.getChessColor()){
 //                   legalpoint = new ChessboardPoint(row+1,col+1);
 //                   legalpoints.add(legalpoint);
 //                }
@@ -217,7 +217,7 @@ public class PawnChessComponent extends ChessComponent {
                 //若右方有兵
                 if(instanceBypass &&  chessComponents[row][col+1] instanceof PawnChessComponent){
                     Target = (PawnChessComponent) chessComponents[row][col+1];
-                    if(Target.isDoubleMove()){
+                    if(Target.isDoubleMove()&&this.getChessColor()!=Target.getChessColor()){
                         legalpoint = new ChessboardPoint(row+1,col+1);
                         bypassPawn = Target;
                         legalpoints.add(legalpoint);
@@ -232,7 +232,7 @@ public class PawnChessComponent extends ChessComponent {
                 }
                 if(instanceBypass &&  chessComponents[row][col-1] instanceof PawnChessComponent){
                     Target = (PawnChessComponent) chessComponents[row][col-1];
-                    if(Target.isDoubleMove()){
+                    if(Target.isDoubleMove()&&Target.getChessColor()!=this.getChessColor()){
                         legalpoint = new ChessboardPoint(row+1,col-1);
                         bypassPawn = Target;
                         legalpoints.add(legalpoint);
