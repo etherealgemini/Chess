@@ -156,7 +156,12 @@ public class KingChessComponent extends ChessComponent {
         //白方：
         boolean whiteShortCastlingCheck1 = isKingFirstMove()&&(chessComponents[7][7] instanceof RookChessComponent && ((RookChessComponent) chessComponents[7][7]).isRookFirstMove());
         boolean whiteLongCastlingCheck1 = isKingFirstMove()&&(chessComponents[7][0] instanceof RookChessComponent && ((RookChessComponent) chessComponents[7][0]).isRookFirstMove());
-
+        for (int i = 0; i < legalpoints.size(); i++) {
+            if(chessComponents[legalpoints.get(i).getX()][legalpoints.get(i).getY()].getChessColor()==chessColor){
+                legalpoints.remove(i);
+                i--;
+            }
+        }
 
         for (int i = 0; i < legalpoints.size(); i++) {
             if(legalpoints.get(i).getX()==destination.getX()&&legalpoints.get(i).getY()==destination.getY()){

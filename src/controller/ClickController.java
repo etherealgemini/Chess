@@ -88,7 +88,8 @@ public class ClickController {
                 chessboard.swapColor();
 
                 // 在这里执行将死判定。注意此时已经更换行棋方了
-                ChessColor enemyColor = chessboard.getCurrentColor()==ChessColor.BLACK?ChessColor.WHITE:ChessColor.BLACK;
+//                ChessColor enemyColor = chessboard.getCurrentColor()==ChessColor.BLACK?ChessColor.WHITE:ChessColor.BLACK;
+                ChessColor enemyColor = chessboard.getCurrentColor();
 
                 System.out.println(enemyColor);
                 if(isCheckMate(chessboard,enemyColor)){

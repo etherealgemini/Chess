@@ -369,8 +369,8 @@ public class task3function {
                 for (int i = 0; i < chessboard.getCHESSBOARD_SIZE(); i++) {
                     for (int j = 0; j < chessboard.getCHESSBOARD_SIZE(); j++) {
                         ChessComponent temp = chessboard.getChessComponents()[i][j];
-                        //若棋子为本方棋
-                        if(temp.getChessColor() == chessColor){
+                        //若棋子为本方棋且不为王
+                        if(temp.getChessColor() == chessColor&&!(temp instanceof KingChessComponent) ){
                             //若可行至可挡落点
                             for (int k = 0; k < blockPoints.size(); k++) {
                                 if(temp.canMoveTo(chessboard.getChessComponents(),blockPoints.get(k))){
@@ -381,6 +381,7 @@ public class task3function {
                         //该棋子失效，继续尝试
                     }
                 }
+                blockPoints.forEach(System.out::println);
                 //尝试结束，方法失败。
                 return false;
             }
@@ -402,8 +403,11 @@ public class task3function {
         if(enemyIsCheckAfterMove){
             //将死判定
             ArrayList<ChessComponent> checkChess = findCheckChess(chessboard,enemyColor);
+            System.out.println("evoke findcheckchess");
+            System.out.println(checkChess.size());
             if(canMoveKing(chessboard,enemyColor)||canEat(chessboard,enemyColor,checkChess)||canBlock(chessboard,enemyColor,checkChess)){
                 //若三种方法任意一种通过，则不被将死，否则立即判负。
+                System.out.println(canBlock(chessboard,enemyColor,checkChess));
                 return false;
             }else{
                 return true;
