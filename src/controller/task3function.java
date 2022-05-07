@@ -461,8 +461,10 @@ public class task3function {
         }
         else if(input instanceof PawnChessComponent){
             ChessboardPoint outputBoardPoint = new ChessboardPoint(input.getChessboardPoint().getX(),input.getChessboardPoint().getY());
+            ChessboardPoint outputOriginPoint = new ChessboardPoint(((PawnChessComponent) input).getOriginpoint().getX(),((PawnChessComponent) input).getOriginpoint().getY());
             Point outputPoint = new Point(input.getX(),input.getY());
-            PawnChessComponent output = new PawnChessComponent(outputBoardPoint,outputPoint,input.getChessColor(),
+
+            PawnChessComponent output = new PawnChessComponent(outputBoardPoint,outputOriginPoint,outputPoint,input.getChessColor(),
                     input.getClickController(),chessboard.getCHESS_SIZE(),
                     ((PawnChessComponent) input).isFirstBypass(),((PawnChessComponent) input).isFirstMove(),
                     ((PawnChessComponent) input).isDoubleMove(),((PawnChessComponent) input).isBypass(),
@@ -494,20 +496,45 @@ public class task3function {
             return;
         }
         else{
-            //move作用:提供一个被移动后的棋子。
-            //代替：将move的拷贝传入history
+            //src:
+
             int srcX = history.get(historyCnt-1).getSrcX();
             int srcY = history.get(historyCnt-1).getSrcY();
 
-            ChessComponent dead = history.get(historyCnt-1).getDeadChess();
+            //若目的地为空格则是为“杀死了一个空格”。
+            ChessComponent dest = history.get(historyCnt-1).getDestChess();
+            int destX = dest.getChessboardPoint().getX();
+            int destY = dest.getChessboardPoint().getY();
+
+
+
             ChessComponent src = history.get(historyCnt-1).getChess0();
 //            EmptySlotComponent empty = new EmptySlotComponent(move.getChessboardPoint(),move.getLocation(),move.getClickController(),chessboard.getCHESS_SIZE());
-            ChessComponent empty = history.get(historyCnt-1).getDeadChess();
+            ChessComponent empty = history.get(historyCnt-1).getDestChess();
             //逻辑如下：将被移动棋子按原位摆放回棋盘，移除移动后的棋子，设置移除位置为空棋子，若死棋不是空棋子则将死棋放回原位。
             chessboard.putChessOnBoard(src);
             chessboard.getChessComponents()[srcX][srcY]=src;
+            if(history.get(historyCnt-1).getBypassChess()!=null&&history.get(historyCnt-1).getBypassChess()instanceof PawnChessComponent){
+                chessboard.putChessOnBoard(history.get(historyCnt-1).getBypassChess());
+                history.get(historyCnt-1).getBypassChess().repaint();
+            }
+
+
+            if(src instanceof PawnChessComponent){
+                System.out.println("evoke setFirstMove");
+                System.out.println(((PawnChessComponent) src).getOriginpoint());
+                //判断该次移动是否为初次移动
+                if(((PawnChessComponent) src).getOriginpoint().getX()==srcX&&((PawnChessComponent) src).getOriginpoint().getY()==srcY){
+                    ((PawnChessComponent) src).setFirstMove(true);
+                    System.out.println("evoke setFirstMove");
+                    if(Math.abs(srcX-destX)==2){
+                        ((PawnChessComponent) src).setDoubleMove(true);
+                    }
+                }
+            }
 
 //            chessboard.remove(empty);
+
             chessboard.putChessOnBoard(empty);
             chessboard.getChessComponents()[empty.getChessboardPoint().getX()][empty.getChessboardPoint().getY()]=empty;
             empty.repaint();

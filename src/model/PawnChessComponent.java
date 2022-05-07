@@ -25,8 +25,8 @@ public class PawnChessComponent extends ChessComponent {
      * 是否可以吃过路兵
      * 是否第一次遇到过路兵。
      */
-    private boolean firstMove = true;
-    private boolean doubleMove = true;
+    private boolean firstMove = true;//一旦移动后立即设定为false，不再变化，除非悔棋
+    private boolean doubleMove = true;//一旦进行二步移动后立即设定为true，否则即为false。
 
     public void setBypass(boolean bypass) {
         this.bypass = bypass;
@@ -35,6 +35,7 @@ public class PawnChessComponent extends ChessComponent {
     private boolean bypass = false;
     private ChessComponent bypassPawn=null;
     private boolean firstBypass = false;
+    private ChessboardPoint originpoint;
 
 
     private static Image PAWN_WHITE;
@@ -73,10 +74,19 @@ public class PawnChessComponent extends ChessComponent {
         }
     }
 
+    public ChessboardPoint getOriginpoint() {
+        return originpoint;
+    }
+
     public PawnChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor color, ClickController listener, int size) {
         super(chessboardPoint, location, color, listener, size);
         initiatePawnImage(color);
+
+        originpoint = new ChessboardPoint(chessboardPoint.getX(),chessboardPoint.getY());
+
     }
+
+
 
     public void setFirstMove(boolean firstMove) {
         this.firstMove = firstMove;
@@ -90,7 +100,7 @@ public class PawnChessComponent extends ChessComponent {
         this.bypassPawn = bypassPawn;
     }
 
-    public PawnChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor color, ClickController listener, int size, boolean firstBypass, boolean firstMove, boolean doubleMove, boolean bypass, ChessComponent bypassPawn){
+    public PawnChessComponent(ChessboardPoint chessboardPoint,ChessboardPoint originpoint, Point location, ChessColor color, ClickController listener, int size, boolean firstBypass, boolean firstMove, boolean doubleMove, boolean bypass, ChessComponent bypassPawn){
         super(chessboardPoint, location, color, listener, size);
         initiatePawnImage(color);
         this.firstBypass=firstBypass;
@@ -98,6 +108,7 @@ public class PawnChessComponent extends ChessComponent {
         this.bypass=bypass;
         this.doubleMove=doubleMove;
         this.firstMove=firstMove;
+        this.originpoint=originpoint;
     }
 
 

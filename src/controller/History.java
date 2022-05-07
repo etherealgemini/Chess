@@ -26,21 +26,29 @@ public class History {
     private static History thisMove;//该次行棋的信息
     private ChessColor chessColor;//该次操作的行棋方
     private ChessComponent chess0;
-    private ChessComponent deadChess;
+    private ChessComponent destChess;//目的地位置的棋子信息
+
+    public ChessComponent getBypassChess() {
+        return bypassChess;
+    }
+
+    private ChessComponent bypassChess;//过路兵信息
+
     private int destX;
     private int destY;
     private int srcX;
     private int srcY;
 
 
-    public History(ChessColor chessColor,ChessComponent chess0, ChessComponent deadChess, int destX, int destY, int srcX, int srcY){
+    public History(ChessColor chessColor, ChessComponent chess0, ChessComponent destChess,ChessComponent bypassChess, int destX, int destY, int srcX, int srcY){
         this.chessColor=chessColor;
         this.chess0=chess0;
-        this.deadChess=deadChess;
+        this.destChess = destChess;
         this.destX=destX;
         this.destY=destY;
         this.srcX=srcX;
         this.srcY=srcY;
+        this.bypassChess=bypassChess;
     }
 
     /**
@@ -55,21 +63,19 @@ public class History {
     public static void inputHistory(Chessboard chessboard, ArrayList<History> history, ChessComponent first, ChessComponent target, ChessComponent bypassEaten){
         //死亡棋子记录
         ChessComponent deadChess1 = null;
-
+        //chess0为传入的棋子，该棋子处于未移动的状态。
         if(!(target instanceof EmptySlotComponent)){
             deadChess1 = createCopy(chessboard,target);
         }
         if(target instanceof EmptySlotComponent){
             deadChess1 = createCopy(chessboard,target);//死亡了一个空棋子，位置为该次移动的终点
             //检查若为吃过路兵的情况
-            if(bypassEaten!=null){
-                deadChess1 = createCopy(chessboard, bypassEaten);
-            }
+
 
         }
 
         ChessComponent thischess = createCopy(chessboard,first);
-        thisMove = new History(chessboard.getCurrentColor(),thischess,deadChess1,
+        thisMove = new History(chessboard.getCurrentColor(),thischess,deadChess1,bypassEaten,
                 deadChess1.getChessboardPoint().getX(),deadChess1.getChessboardPoint().getY(),
                 thischess.getChessboardPoint().getX(),thischess.getChessboardPoint().getY());
         history.add(thisMove);
@@ -89,8 +95,8 @@ public class History {
         return chess0;
     }
 
-    public ChessComponent getDeadChess() {
-        return deadChess;
+    public ChessComponent getDestChess() {
+        return destChess;
     }
 
     public int getDestX() {

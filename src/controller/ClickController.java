@@ -78,11 +78,11 @@ public class ClickController {
                 chessboard.swapChessComponents(first, chessComponent);
 
                 // 在这里执行将军相关的操作合法性检测：若移动后被将军，则该次移动非法，执行悔棋操作回退。
-                boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
-                if(isCheckAfterMove){
-                    System.out.println("You will lose if move here!");
-                    undo(chessboard,history);
-                }
+//                boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
+//                if(isCheckAfterMove){
+//                    System.out.println("You will lose if move here!");
+//                    undo(chessboard,history);
+//                }
 
                 //change side 更换行棋方
                 chessboard.swapColor();
