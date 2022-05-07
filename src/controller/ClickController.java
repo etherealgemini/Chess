@@ -80,7 +80,7 @@ public class ClickController {
                 boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
                 if(isCheckAfterMove){
                     System.out.println("You will lose if move here!");
-                    undo(chessboard,history,first);
+                    undo(chessboard,history);
                 }
 
                 //change side 更换行棋方

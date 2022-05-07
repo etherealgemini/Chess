@@ -122,7 +122,7 @@ public class KingChessComponent extends ChessComponent {
             legalpoint=new ChessboardPoint(row,col+1);
             legalpoints.add(legalpoint);
         }
-        if(col-1<=0){
+        if(col-1>=0){
             legalpoint=new ChessboardPoint(row,col-1);
             legalpoints.add(legalpoint);
         }

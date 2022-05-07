@@ -480,7 +480,7 @@ public class task3function {
      * 注意传入的historyCnt请正确使用
      * FIXME：将传入变量move去除，完全依赖history。
      */
-    public static void undo(Chessboard chessboard, ArrayList<History> history, ChessComponent move){
+    public static void undo(Chessboard chessboard, ArrayList<History> history){
         if(historyCnt<=0){
             return;
         }

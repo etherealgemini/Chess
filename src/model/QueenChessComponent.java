@@ -225,7 +225,7 @@ public class QueenChessComponent extends ChessComponent {
                 }
 //                        System.out.println("j="+j+" row="+row+" col="+col);
                 if(!(chessComponents[row-j][col+j] instanceof  EmptySlotComponent)){
-                    if ((chessComponents[row - j][col - j].getChessColor() != chessColor)) {
+                    if ((chessComponents[row - j][col + j].getChessColor() != chessColor)) {
                         legalpoint = new ChessboardPoint(row - j, col + j);
                         legalpoints.add(legalpoint);
                     }
