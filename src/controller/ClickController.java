@@ -14,7 +14,7 @@ public class ClickController {
      * int 历史记录指针
      * Arraylist 历史记录列表，同时实现了回合数记录。
      */
-    private static int historyCnt;
+    static int historyCnt;
     private ArrayList<History> history = new ArrayList<>();
     private static History thisMove;
 

@@ -9,7 +9,7 @@ import java.awt.*;
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
  * 该类将配合GameController与ClickController完成游戏的完整运行
  */
-public class ChessGameFrame extends JFrame {
+public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体（Y）
     //    public final Dimension FRAME_SIZE ;
     private final int WIDTH;
     private final int HEIGTH;
@@ -22,7 +22,7 @@ public class ChessGameFrame extends JFrame {
         this.HEIGTH = height;
         this.CHESSBOARD_SIZE = HEIGTH * 4 / 5;
 
-        setSize(WIDTH, HEIGTH);
+        setSize(WIDTH, HEIGTH); //设置窗体的大小（Y）
         setLocationRelativeTo(null); // Center the window.
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //设置程序关闭按键，如果点击右上方的叉就游戏全部关闭了
         setLayout(null);
@@ -32,6 +32,7 @@ public class ChessGameFrame extends JFrame {
         addLabel();
         addHelloButton();
         addLoadButton();
+        addRestartGameButton();
     }
 
 
@@ -48,12 +49,12 @@ public class ChessGameFrame extends JFrame {
     /**
      * 在游戏面板中添加标签
      */
-    private void addLabel() {
+    private void addLabel() { //（Y）窗口创建文本框
         JLabel statusLabel = new JLabel("Sample label");
         statusLabel.setLocation(HEIGTH, HEIGTH / 10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
-        add(statusLabel);
+        add(statusLabel); // Y 让该标签添加到窗体中
     }
 
     /**
@@ -62,7 +63,13 @@ public class ChessGameFrame extends JFrame {
 
     private void addHelloButton() {
         JButton button = new JButton("Show Hello Here");
-        button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "Hello, world!"));
+        button.addActionListener((e) -> {
+            JOptionPane.showMessageDialog(this, "准备好开始一场新的对决了吗");
+
+        // Y 在里面添加我鼠标点击该按钮之后要执行的命令语句
+
+
+        });
         button.setLocation(HEIGTH, HEIGTH / 10 + 120);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
@@ -82,5 +89,24 @@ public class ChessGameFrame extends JFrame {
             gameController.loadGameFromFile(path);//在该方法中完成文件的读取
         });
     }
+
+    //Y 新加入的重新开始游戏的按钮
+    private void addRestartGameButton() {
+        JButton button = new JButton("Restart");
+        button.setLocation(HEIGTH, HEIGTH / 10 + 360);
+        button.setSize(200, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Click restart");
+            JOptionPane.showMessageDialog(this, "点击确认重开一局");
+           // Y 写方法初始化游戏
+        });
+    }
+
+
+
+
 
 }
