@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * 这个类表示国际象棋里面的车
@@ -77,32 +78,11 @@ public class RookChessComponent extends ChessComponent {
      */
 
     @Override
+    /**
+     * @Fixme 请按照其他棋子的方式将合法落子点存入arraylist中
+     */
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
-        ChessboardPoint source = getChessboardPoint();
-        if (source.getX() == destination.getX()) {
-            //若在同一行:
-            //NOTICE: 此处row为竖行，而非横行！
-            int row = source.getX();
-            //检索该行中*由棋子位置*到*落点位置*之间是否存在棋子，若存在则该次移动非法，即*检测是否越过棋子移动*
-            for (int col = Math.min(source.getY(), destination.getY()) + 1;
-                 col < Math.max(source.getY(), destination.getY()); col++) {
-
-                if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
-                    return false;
-                }
-            }
-        } else if (source.getY() == destination.getY()) {
-            int col = source.getY();
-            for (int row = Math.min(source.getX(), destination.getX()) + 1;
-                 row < Math.max(source.getX(), destination.getX()); row++) {
-                if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
-                    return false;
-                }
-            }
-        } else { // Not on the same row or the same column.
-            return false;
-        }
-        rookFirstMove = false;
+        //wait until the ass5 over. I have already done the method, and I will move back when the ass5 is over.
         return true;
     }
 

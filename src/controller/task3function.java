@@ -10,10 +10,15 @@ import java.util.ArrayList;
 import static controller.ClickController.historyCnt;
 
 /**
- * 该类为工具类，实现task3相关的所有功能，提供静态方法。
+ * 该类为工具类，实现task3相关的所有功能，提供静态方法。<br>
+ * 请不要对该类在该类外的地方进行任何的实例化操作！
  */
 
 public class task3function {
+    /**
+     * 防止可能出现的实例化操作。
+     */
+    private task3function(){}
 
     /**
      * 该方法实现吃过路兵，若执行成功将返还一个被吃掉的棋子，否则返回null
@@ -143,11 +148,12 @@ public class task3function {
                     for (int k = 0; k < chessboard.getCHESSBOARD_SIZE(); k++) {
                         for (int l = 0; l < chessboard.getCHESSBOARD_SIZE(); l++) {
                             ChessComponent chess2 = chessboard.getChessComponents()[k][l];
-                            if(chess1.canMoveTo(chessboard.getChessComponents(),chess2.getChessboardPoint())){
+                            //注意 canMoveTo没有实现吃友方兵的排除
+                            if(chess1.canMoveTo(chessboard.getChessComponents(),chess2.getChessboardPoint())&&chess2.getChessColor()!=chessColor){
                                 ChessComponent mightDead = null;
-                                if(!(chess2 instanceof EmptySlotComponent)){
+
                                     mightDead = createCopy(chessboard,chess2);
-                                }
+
                                 chessboard.swapChessComponents(chess1,chess2);
 
                                 if(isCheck(chessboard,chessColor)){
@@ -159,10 +165,11 @@ public class task3function {
                                     continue;
                                 }else{
                                     //方法成功，恢复棋盘
+                                    System.out.println("evoke else");
                                     chessboard.swapChessComponents(chess1,chess2);
-                                    if(mightDead!=null){
+
                                         chessboard.putChessOnBoard(mightDead);
-                                    }
+
                                     return true;
                                 }
 
@@ -224,6 +231,9 @@ public class task3function {
      * 该方法实现判定对指定方的将死检测2：能否通过吃将指定方的军的棋子来脱离将军
      */
     public static boolean canEat(Chessboard chessboard, ChessColor chessColor,ArrayList<ChessComponent> checkChesses){
+        if(checkChesses==null){
+            return false;
+        }
         if(checkChesses.size()>=2){
             //一旦有两个棋子将军，该方法必然失效
             return false;
@@ -252,6 +262,9 @@ public class task3function {
      * 该方法实现判定对指定方的将死检测3：能否挡将。
      */
     public static boolean canBlock(Chessboard chessboard, ChessColor chessColor,ArrayList<ChessComponent> checkChesses){
+        if(checkChesses==null){
+            return false;
+        }
         if(checkChesses.size()>=2){
             //一旦有两个棋子将军，该方法必然失效
             return false;
@@ -376,6 +389,29 @@ public class task3function {
     }
 
     /**
+     * 该方法实现对指定行棋方的全部将死判定，已经集成了将军判定。
+     * @param chessboard 棋盘
+     * @param chessColor 指定行棋方
+     * @return 指定行棋方是否被将军
+     */
+    public static boolean isCheckMate(Chessboard chessboard,ChessColor chessColor){
+        ChessColor enemyColor = chessColor;
+        boolean enemyIsCheckAfterMove = isCheck(chessboard,enemyColor);
+        if(enemyIsCheckAfterMove){
+            //将死判定
+            ArrayList<ChessComponent> checkChess = findCheckChess(chessboard,enemyColor);
+            if(canMoveKing(chessboard,enemyColor)||canEat(chessboard,enemyColor,checkChess)||canBlock(chessboard,enemyColor,checkChess)){
+                //若三种方法任意一种通过，则不被将死，否则立即判负。
+                return false;
+            }else{
+                return true;
+            }
+        }
+        //如果该方没有被将军，那么自然不会被将死。
+        return false;
+    }
+
+    /**
      * 该方法用于安全创建深拷贝棋子<br>
      * 使用时机：<br>
      * 当希望拷贝一枚棋子对象 input 并且不希望 将 拷贝 与 input 的属性链接起来时，请调用createCopy方法拷贝，该方法将返回一个对input棋子的安全拷贝对象。<br>
@@ -461,24 +497,28 @@ public class task3function {
             chessboard.remove(move);
             chessboard.putChessOnBoard(empty);
             chessboard.getChessComponents()[empty.getChessboardPoint().getX()][empty.getChessboardPoint().getY()]=empty;
-            if(!(dead instanceof EmptySlotComponent)){
-                chessboard.putChessOnBoard(dead);
-                dead.repaint();
-            }
-            if(move instanceof PawnChessComponent){
-                if(!((PawnChessComponent) move).isFirstMove()){
-                    ((PawnChessComponent) src).setFirstMove(true);
-                }
-                if(!((PawnChessComponent) move).isDoubleMove()){
-                    ((PawnChessComponent) src).setDoubleMove(true);
-                }
-            }
-            empty.repaint();
-            src.repaint();
+//            if(!(dead instanceof EmptySlotComponent)){
+//                chessboard.putChessOnBoard(dead);
+////                System.out.println("evoke dead");
+////                dead.repaint();
+//            }
+//            if(move instanceof PawnChessComponent){
+//                if(!((PawnChessComponent) move).isFirstMove()){
+//                    ((PawnChessComponent) src).setFirstMove(true);
+//                }
+//                if(!((PawnChessComponent) move).isDoubleMove()){
+//                    ((PawnChessComponent) src).setDoubleMove(true);
+//                }
+//            }
+
+            System.out.println();
+            System.out.println("src: "+srcX+" "+srcY );
+//            empty.repaint();
+//            src.repaint();
 
             history.remove(historyCnt-1);
             historyCnt--;
-            System.out.println(historyCnt);
+//            System.out.println(historyCnt);
 
             chessboard.swapColor();
         }
