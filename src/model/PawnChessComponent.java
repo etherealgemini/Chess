@@ -243,6 +243,7 @@ public class PawnChessComponent extends ChessComponent {
         for (int i = 0; i < legalpoints.size(); i++) {
             if(chessComponents[legalpoints.get(i).getX()][legalpoints.get(i).getY()].getChessColor()==chessColor){
                 legalpoints.remove(i);
+                i--;
             }
         }
         for (int i = 0; i < legalpoints.size(); i++) {

@@ -129,6 +129,8 @@ public class KingChessComponent extends ChessComponent {
         for (int i = 0; i < legalpoints.size(); i++) {
             if(chessComponents[legalpoints.get(i).getX()][legalpoints.get(i).getY()].getChessColor()==chessColor){
                 legalpoints.remove(i);
+                i--;
+                //一个十分刁钻的remove问题，remove本身会改变数组索引，最好对指针作相应变换。
             }
         }
 
