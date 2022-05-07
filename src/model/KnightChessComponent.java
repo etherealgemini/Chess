@@ -63,6 +63,8 @@ public class KnightChessComponent extends ChessComponent {
     @Override
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
+        int row = source.getX();
+        int col = source.getY();
         /**伪代码：
          * 列举所有合法落点
          * 如果（destination！=合法落点）
@@ -74,54 +76,54 @@ public class KnightChessComponent extends ChessComponent {
 
         //确保不会超出边界，边界值如下：（0，0）->(0,7) ->(7,7) ->(7,0) ->(0,0)，由左上顺时针进行。
         //向上走2步
-        if(source.getY()-2>=0){
+        if(col-2>=0){
             //向左走1步
-            if(source.getX()-1>=0){
-                legalpoint = new ChessboardPoint(source.getX()-1, source.getY()-2);
+            if(row-1>=0){
+                legalpoint = new ChessboardPoint(row-1, col-2);
                 legalpoints.add(legalpoint);
             }
             //向右走1步
-            if(source.getX()+1<=7){
-                legalpoint = new ChessboardPoint(source.getX()+1, source.getY()-2);
+            if(row+1<=7){
+                legalpoint = new ChessboardPoint(row+1, col-2);
                 legalpoints.add(legalpoint);
             }
         }
         //向下走2步
-        if(source.getY()+2<=7){
+        if(col+2<=7){
             //向左走1步
-            if(source.getX()-1>=0){
-                legalpoint = new ChessboardPoint(source.getX()-1, source.getY()+2);
+            if(row-1>=0){
+                legalpoint = new ChessboardPoint(row-1, col+2);
                 legalpoints.add(legalpoint);
             }
             //向右走1步
-            if(source.getX()+1<=7){
-                legalpoint = new ChessboardPoint(source.getX()+1, source.getY()+2);
+            if(row+1<=7){
+                legalpoint = new ChessboardPoint(row+1, col+2);
                 legalpoints.add(legalpoint);
             }
         }
         //向左走2步
-        if(source.getX()-2>=0){
+        if(row-2>=0){
             //向上走1步
-            if(source.getY()-1>=0){
-                legalpoint = new ChessboardPoint(source.getX()-2, source.getY()-1);
+            if(col-1>=0){
+                legalpoint = new ChessboardPoint(row-2, col-1);
                 legalpoints.add(legalpoint);
             }
             //向下走1步
-            if(source.getY()+1<=7){
-                legalpoint = new ChessboardPoint(source.getX()-2, source.getY()+1);
+            if(col+1<=7){
+                legalpoint = new ChessboardPoint(row-2, col+1);
                 legalpoints.add(legalpoint);
             }
         }
         //向右走2步
-        if(source.getX()+2<=7){
+        if(row+2<=7){
             //向上走1步
-            if(source.getY()-1>=0){
-                legalpoint = new ChessboardPoint(source.getX()+2, source.getY()-1);
+            if(col-1>=0){
+                legalpoint = new ChessboardPoint(row+2, col-1);
                 legalpoints.add(legalpoint);
             }
             //向下走1步
-            if(source.getY()+1<=7){
-                legalpoint = new ChessboardPoint(source.getX()+2, source.getY()+1);
+            if(col+1<=7){
+                legalpoint = new ChessboardPoint(row+2, col+1);
                 legalpoints.add(legalpoint);
             }
         }
