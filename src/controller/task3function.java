@@ -142,6 +142,7 @@ public class task3function {
      * 例如：指定白方，那么判定白方能否通过移动王来脱离将军。
      */
     public static boolean canMoveKing(Chessboard chessboard, ChessColor chessColor){
+        //FIXME: 该方法将导致王被真实移动而没有被复原！！
         for (int i = 0; i < chessboard.getCHESSBOARD_SIZE(); i++) {
             for (int j = 0; j < chessboard.getCHESSBOARD_SIZE(); j++) {
                 ChessComponent chess1 = chessboard.getChessComponents()[i][j];
@@ -153,24 +154,27 @@ public class task3function {
 
                             if(chess1.canMoveTo(chessboard.getChessComponents(),chess2.getChessboardPoint())&&chess2.getChessColor()!=chessColor){
                                 ChessComponent mightDead = null;
+                                ChessComponent src = createCopy(chessboard,chess1);
+                                ChessComponent dest = createCopy(chessboard,chess2);
 
-                                    mightDead = createCopy(chessboard,chess2);
 
                                 chessboard.swapChessComponents(chess1,chess2);
 
                                 if(isCheck(chessboard,chessColor)){
                                     //若尝试移动后仍被将军，先恢复棋盘，再继续操作
-                                    chessboard.swapChessComponents(chess1,chess2);
-                                    if(mightDead!=null){
-                                        chessboard.putChessOnBoard(mightDead);
-                                    }
+                                    chessboard.putChessOnBoard(src);
+                                    chessboard.putChessOnBoard(dest);
+                                    src.repaint();
+                                    dest.repaint();
                                     continue;
-                                }else{
+                                }
+                                else{
                                     //方法成功，恢复棋盘
                                     System.out.println("evoke else");
-                                    chessboard.swapChessComponents(chess1,chess2);
-
-                                    chessboard.putChessOnBoard(mightDead);
+                                    chessboard.putChessOnBoard(src);
+                                    chessboard.putChessOnBoard(dest);
+                                    src.repaint();
+                                    dest.repaint();
 
                                     return true;
                                 }
@@ -264,6 +268,7 @@ public class task3function {
      * 该方法实现判定对指定方的将死检测3：能否挡将。
      */
     public static boolean canBlock(Chessboard chessboard, ChessColor chessColor,ArrayList<ChessComponent> checkChesses){
+
         if(checkChesses==null){
             return false;
         }
@@ -482,10 +487,10 @@ public class task3function {
     /**
      * 该方法实现悔棋功能。<br>
      * 注意传入的historyCnt请正确使用
-     * FIXME：将传入变量move去除，完全依赖history。
      */
     public static void undo(Chessboard chessboard, ArrayList<History> history){
         if(historyCnt<=0){
+            System.out.println("cannot undo!");
             return;
         }
         else{
@@ -502,10 +507,11 @@ public class task3function {
             chessboard.putChessOnBoard(src);
             chessboard.getChessComponents()[srcX][srcY]=src;
 
-//            chessboard.remove(his);
+//            chessboard.remove(empty);
             chessboard.putChessOnBoard(empty);
             chessboard.getChessComponents()[empty.getChessboardPoint().getX()][empty.getChessboardPoint().getY()]=empty;
-
+            empty.repaint();
+            src.repaint();
             System.out.println();
             System.out.println("src: "+srcX+" "+srcY );
 //            empty.repaint();

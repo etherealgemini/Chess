@@ -1,6 +1,7 @@
 package view;
 
 import controller.GameController;
+import controller.task3function;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +34,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         addHelloButton();
         addLoadButton();
         addRestartGameButton();
+        addUndoButton();
     }
 
 
@@ -105,6 +107,20 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         });
     }
 
+    private void addUndoButton(){
+        // Z 悔棋按钮
+        JButton button = new JButton("Undo");
+        button.setLocation(HEIGTH, HEIGTH / 10 + 500);
+        button.setSize(200, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Click undo");
+            task3function.undo(gameController.getChessboard(),gameController.getChessboard().getClickController().getHistory());
+
+        });
+    }
 
 
 
