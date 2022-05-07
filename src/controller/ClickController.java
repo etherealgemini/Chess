@@ -69,13 +69,13 @@ public class ClickController {
                 }
 
                 //录入历史记录
-                ChessComponent firstCopy = createCopy(chessboard,first);
+                ChessComponent firstCopy = createCopy(chessboard,first);//first为未移动前的棋子！
                 ChessComponent chessComponentCopy = createCopy(chessboard,chessComponent);
                 inputHistory(chessboard,history,firstCopy,chessComponentCopy,bypassEaten);bypassEaten = null;
 
                 //repaint in swap chess method.
                 chessboard.swapChessComponents(first, chessComponent);
-
+//                undo(chessboard,history,first);
                 // 在这里执行将军相关的操作合法性检测：若移动后被将军，则该次移动非法，执行悔棋操作回退。
                 boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
                 if(isCheckAfterMove){

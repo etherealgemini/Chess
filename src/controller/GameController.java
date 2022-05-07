@@ -11,6 +11,10 @@ import java.util.List;
  * 该类负责所有与游戏加载、运行等相关功能控制的实现
  */
 public class GameController {
+    public Chessboard getChessboard() {
+        return chessboard;
+    }
+
     private Chessboard chessboard;
 
     public GameController(Chessboard chessboard) {

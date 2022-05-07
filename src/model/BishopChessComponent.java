@@ -61,8 +61,141 @@ public class BishopChessComponent extends ChessComponent {
      * @Fixme 请按照其他棋子的方式将合法落子点存入arraylist中
      */
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
-        //wait until the ass5 over. I have already done the method, and I will move back when the ass5 is over.
-        return true;
+        /**
+         * 伪代码：
+         * 如果（落点在斜角位置）：
+         *      则判断 如果（落点与棋子原位置斜角位置间是否存在棋子）：
+         *                  若存在，则：非法
+         *                  否则（不存在）：合法落点
+         * 否则：非法
+         * 存入所有合法落点
+         * 检索目标位置是否在合法落点列表中
+         * 若是，则可以移动
+         * 否则不能移动
+         */
+        //获取棋子所在棋盘点
+        //注意destination为该方法调用时即传入的数据
+        ChessboardPoint source = getChessboardPoint();
+        ArrayList<ChessboardPoint> legalpoints = new ArrayList<>();
+        ChessboardPoint legalpoint = new ChessboardPoint(0,0);
+
+
+
+        for (int i = -8; i <8 ; i++) {
+            //棋盘坐标系：将标准坐标系顺时针旋转90°
+            //斜角判定，为了降低难度，即便计算值超出棋盘也没有关系，demo已经确保click不会记录超出棋盘的位置。
+            //1 3象限斜角判定
+            //我们将录入所有合法落子点
+            if(destination.getX()-i==source.getX()&&destination.getY()-i==source.getY()){
+                int row = source.getX();
+                int col = source.getY();
+                //朝左上角检索
+                for (int j = 1; j < 8; j++) {
+                    if(row-j<0||col-j<0){
+                        break;//防止越界
+                    }
+//                        if(row-j>7||col-j>7){
+//                            continue;
+//                        }
+                    //一旦遭遇第一个友方棋子则停止，敌方棋子则将该子位置录入后停止
+                    if(!(chessComponents[row-j][col-j] instanceof  EmptySlotComponent)) {
+                        if ((chessComponents[row - j][col - j].getChessColor() != chessColor)) {
+                            legalpoint = new ChessboardPoint(row - j, col - j);
+                            legalpoints.add(legalpoint);
+                        }
+                        break;
+                    }
+                    legalpoint = new ChessboardPoint(row-j,col-j);
+                    legalpoints.add(legalpoint);
+                }
+                for (int j = -1; j > -8; j--) {
+                    if(row-j>7||col-j>7){
+                        break;//防止越界
+                    }
+//                    if(row-j<0||col-j<0){
+//                        continue;
+//                    }
+                    //一旦遭遇第一个友方棋子则停止，敌方棋子则将该子位置录入后停止
+                    if(!(chessComponents[row-j][col-j] instanceof  EmptySlotComponent)) {
+                        if ((chessComponents[row - j][col - j].getChessColor() != chessColor)) {
+                            legalpoint = new ChessboardPoint(row - j, col - j);
+                            legalpoints.add(legalpoint);
+                        }
+                        break;
+                    }
+                    legalpoint = new ChessboardPoint(row-j,col-j);
+                    legalpoints.add(legalpoint);
+                }
+
+
+
+//                    //不需要考虑落点与棋子重合，clickController已经做好判定了。
+//                    //同样地，range==-1将跳过。
+//                    for (int j = range; j < -1; j++) {
+//                        if(!(chessComponents[row-j-1][col-j-1] instanceof  EmptySlotComponent)){
+//                            break;
+//                        }
+//                        legalpoint = new ChessboardPoint(row-j-1,col-j-1);
+//                        legalpoints.add(legalpoint);
+//                    }
+//
+//                //若运行到此处，则表示：满足斜角，没有越过棋子
+
+            }
+            //2 4象限斜角判定
+
+            int row = source.getX();
+            int col = source.getY();
+            //若range为正，则说明source在destination的右下方，反之同理。指针永远从source朝destination移动。
+            // 注意2 4象限斜角判定存在方向问题，向↖移动为 x-a，y+a 反之 x+a，y-a
+
+
+            //特别地，若range==1，for代码块将自动跳过，表示落点恰好挨着棋子原点，无需判定。
+            //向左上方移动
+            for (int j = 1; j < 8; j++) {
+                if(row-j<0||col+j>7){
+                    break;
+                }
+                if(!(chessComponents[row-j][col+j] instanceof  EmptySlotComponent)){
+                    if ((chessComponents[row - j][col + j].getChessColor() != chessColor)) {
+                        legalpoint = new ChessboardPoint(row - j, col + j);
+                        legalpoints.add(legalpoint);
+                    }
+                    break;
+                }
+                legalpoint = new ChessboardPoint(row-j,col+j);
+                legalpoints.add(legalpoint);
+            }
+
+
+            //不需要考虑落点与棋子重合，clickController已经做好判定了。
+            //同样地，range==-1将跳过。
+            //向右上方移动
+            for (int j = -1; j > -8; j--) {
+                if(row-j>7||col+j<0){
+                    break;
+                }
+//                        System.out.println("j="+j+" row="+row+" col="+col);
+                if(!(chessComponents[row-j][col+j] instanceof  EmptySlotComponent)){
+                    if ((chessComponents[row - j][col - j].getChessColor() != chessColor)) {
+                        legalpoint = new ChessboardPoint(row - j, col + j);
+                        legalpoints.add(legalpoint);
+                    }
+                    break;
+                }
+                legalpoint = new ChessboardPoint(row-j,col+j);
+                legalpoints.add(legalpoint);
+            }
+
+
+        }
+
+        for (int i = 0; i < legalpoints.size(); i++) {
+            if(destination.getX()==legalpoints.get(i).getX()&&destination.getY()==legalpoints.get(i).getY()){
+                return true;
+            }
+        }
+        return false;
     }
 
 

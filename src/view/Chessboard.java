@@ -136,6 +136,7 @@ public class Chessboard extends JComponent {
         chess2.repaint();
     }
 
+
     public void initiateEmptyChessboard() {
         for (int i = 0; i < chessComponents.length; i++) {
             for (int j = 0; j < chessComponents[i].length; j++) {

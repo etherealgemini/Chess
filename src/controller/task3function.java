@@ -114,7 +114,9 @@ public class task3function {
                     for (int k = 0; k < chessboard.getCHESSBOARD_SIZE(); k++) {
                         for (int l = 0; l < chessboard.getCHESSBOARD_SIZE(); l++) {
                             if(! (chessComponents[k][l] instanceof EmptySlotComponent)){
+
                                 ChessComponent attack = chessComponents[k][l];
+
                                 //敌方棋子检测
                                 if(attack.getChessColor()!=chessColor){
                                     //攻击检测，若可攻击则指定方被将军
@@ -476,25 +478,27 @@ public class task3function {
     /**
      * 该方法实现悔棋功能。<br>
      * 注意传入的historyCnt请正确使用
+     * FIXME：将传入变量move去除，完全依赖history。
      */
     public static void undo(Chessboard chessboard, ArrayList<History> history, ChessComponent move){
         if(historyCnt<=0){
             return;
         }
         else{
-
+            //move作用:提供一个被移动后的棋子。
+            //代替：将move的拷贝传入history
             int srcX = history.get(historyCnt-1).getSrcX();
             int srcY = history.get(historyCnt-1).getSrcY();
 
             ChessComponent dead = history.get(historyCnt-1).getDeadChess();
             ChessComponent src = history.get(historyCnt-1).getChess0();
-            EmptySlotComponent empty = new EmptySlotComponent(move.getChessboardPoint(),move.getLocation(),move.getClickController(),chessboard.getCHESS_SIZE());
-
+//            EmptySlotComponent empty = new EmptySlotComponent(move.getChessboardPoint(),move.getLocation(),move.getClickController(),chessboard.getCHESS_SIZE());
+            ChessComponent empty = history.get(historyCnt-1).getDeadChess();
             //逻辑如下：将被移动棋子按原位摆放回棋盘，移除移动后的棋子，设置移除位置为空棋子，若死棋不是空棋子则将死棋放回原位。
             chessboard.putChessOnBoard(src);
             chessboard.getChessComponents()[srcX][srcY]=src;
 
-            chessboard.remove(move);
+//            chessboard.remove(his);
             chessboard.putChessOnBoard(empty);
             chessboard.getChessComponents()[empty.getChessboardPoint().getX()][empty.getChessboardPoint().getY()]=empty;
 //            if(!(dead instanceof EmptySlotComponent)){

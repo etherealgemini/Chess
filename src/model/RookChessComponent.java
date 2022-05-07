@@ -82,9 +82,76 @@ public class RookChessComponent extends ChessComponent {
      * @Fixme 请按照其他棋子的方式将合法落子点存入arraylist中
      */
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
-        //wait until the ass5 over. I have already done the method, and I will move back when the ass5 is over.
-        return true;
+        ChessboardPoint source = getChessboardPoint();
+        ArrayList<ChessboardPoint> legalpoints = new ArrayList<>();
+        ChessboardPoint legalpoint = new ChessboardPoint(0,0);
+
+
+        //若在同一行:
+        //NOTICE: 此处row为竖行，而非横行！
+        int row = source.getX();
+        int col = source.getY();
+        boolean isCrossRowUp = false;
+        boolean isCrossRowDown = false;
+        boolean isCrossColUp = false;
+        boolean isCrossColDown = false;
+        for (int i = 1; i < 8; i++) {
+            if(!isCrossRowUp&&row-i>=0){
+                if(!(chessComponents[row-i][col] instanceof  EmptySlotComponent)) {
+                    if ((chessComponents[row - i][col].getChessColor() != chessColor)) {
+                        legalpoint = new ChessboardPoint(row - i, col);
+                        legalpoints.add(legalpoint);
+                    }
+                    isCrossRowUp=true;
+                }
+                legalpoint = new ChessboardPoint(row - i, col);
+                legalpoints.add(legalpoint);
+            }
+            if(!isCrossRowDown&&row+i<=7){
+                if(!(chessComponents[row+i][col] instanceof  EmptySlotComponent)) {
+                    if ((chessComponents[row + i][col].getChessColor() != chessColor)) {
+                        legalpoint = new ChessboardPoint(row + i, col);
+                        legalpoints.add(legalpoint);
+                    }
+                    isCrossRowDown=true;
+                }
+                legalpoint = new ChessboardPoint(row + i, col);
+                legalpoints.add(legalpoint);
+            }
+            if(!isCrossColUp&&col-i>=0){
+                if(!(chessComponents[row][col-i] instanceof  EmptySlotComponent)) {
+                    if ((chessComponents[row][col-i].getChessColor() != chessColor)) {
+                        legalpoint = new ChessboardPoint(row, col-i);
+                        legalpoints.add(legalpoint);
+                    }
+                    isCrossColUp=true;
+                }
+                legalpoint = new ChessboardPoint(row, col-i);
+                legalpoints.add(legalpoint);
+            }
+            if(!isCrossColDown&&col+i<=7){
+                if(!(chessComponents[row][col+i] instanceof  EmptySlotComponent)) {
+                    if ((chessComponents[row][col+i].getChessColor() != chessColor)) {
+                        legalpoint = new ChessboardPoint(row, col+i);
+                        legalpoints.add(legalpoint);
+                    }
+                    isCrossColDown=true;
+                }
+                legalpoint = new ChessboardPoint(row, col+i);
+                legalpoints.add(legalpoint);
+            }
+        }
+
+        for (int i = 0; i < legalpoints.size(); i++) {
+            if(destination.getX()==legalpoints.get(i).getX()&&destination.getY()==legalpoints.get(i).getY()){
+                return true;
+            }
+        }
+
+        rookFirstMove = false;
+        return false;
     }
+
 
     /**
      * 注意这个方法，每当窗体受到了形状的变化，或者是通知要进行绘图的时候，就会调用这个方法进行画图。
