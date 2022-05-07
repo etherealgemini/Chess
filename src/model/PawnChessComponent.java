@@ -137,6 +137,8 @@ public class PawnChessComponent extends ChessComponent {
         int col = source.getY();
 
         PawnChessComponent Target = null;
+        boolean isInRowUpperBound = row+1<=7;
+        boolean isInRowLowerBound = row-1>=0;
 
         //检测：若为 非第一回合 且 上一回合为走兵 且 上一回合走兵走两格 则为真
         boolean instanceBypass = ClickController.getHistoryCnt()-1>=0 && getClickController().getHistory().get(ClickController.getHistoryCnt()-1).getChess0() instanceof PawnChessComponent &&
@@ -197,7 +199,7 @@ public class PawnChessComponent extends ChessComponent {
         }
 
         if(pawnImage==PAWN_BLACK){
-            if(row+1>=0&&(chessComponents[row+1][col] instanceof EmptySlotComponent)){
+            if(row+1<=7&&(chessComponents[row+1][col] instanceof EmptySlotComponent)){
                 legalpoint= new ChessboardPoint(row+1,col);
                 legalpoints.add(legalpoint);
             }
