@@ -117,7 +117,7 @@ public class task3function {
 
                                 ChessComponent attack = chessComponents[k][l];
 
-                                //敌方棋子检测
+                                //是否为敌方棋子
                                 if(attack.getChessColor()!=chessColor){
                                     //攻击检测，若可攻击则指定方被将军
                                     if(attack.canMoveTo(chessComponents,king.getChessboardPoint())){
@@ -412,7 +412,6 @@ public class task3function {
             System.out.println(checkChess.size());
             if(canMoveKing(chessboard,enemyColor)||canEat(chessboard,enemyColor,checkChess)||canBlock(chessboard,enemyColor,checkChess)){
                 //若三种方法任意一种通过，则不被将死，否则立即判负。
-                System.out.println(canBlock(chessboard,enemyColor,checkChess));
                 return false;
             }else{
                 return true;

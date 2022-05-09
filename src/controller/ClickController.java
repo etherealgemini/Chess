@@ -52,6 +52,7 @@ public class ClickController {
                 first = null;
                 recordFirst.repaint();
             } else if (handleSecond(chessComponent)) {
+                System.out.println("here");
                 //这里的chessComponent表示目标位置的棋子（包括空白）及其所有属性，first是被移动(被红圈选中的)棋子。
 
                 //一旦通过handleSecond检测，即表示该次行棋合法，且将被执行
@@ -78,11 +79,11 @@ public class ClickController {
                 chessboard.swapChessComponents(first, chessComponent);
 
                 // 在这里执行将军相关的操作合法性检测：若移动后被将军，则该次移动非法，执行悔棋操作回退。
-//                boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
-//                if(isCheckAfterMove){
-//                    System.out.println("You will lose if move here!");
-//                    undo(chessboard,history);
-//                }
+                boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
+                if(isCheckAfterMove){
+                    System.out.println("You will lose if move here!");
+                    undo(chessboard,history);
+                }
 
                 //change side 更换行棋方
                 chessboard.swapColor();
@@ -90,10 +91,10 @@ public class ClickController {
                 // 在这里执行将死判定。注意此时已经更换行棋方了
                 ChessColor enemyColor = chessboard.getCurrentColor();
                 System.out.println(enemyColor);
-//                if(isCheckMate(chessboard,enemyColor)){
-//                    //TODO:在这里发生将死后的事件
-//                    System.out.println(enemyColor+" is defeated!");
-//                }
+                if(isCheckMate(chessboard,enemyColor)){
+                    //TODO:在这里发生将死后的事件
+                    System.out.println(enemyColor+" is defeated!");
+                }
 
                 //reset the first (selected chess)
                 first.setSelected(false);
@@ -118,6 +119,7 @@ public class ClickController {
 
     private boolean handleSecond(ChessComponent chessComponent) {
         //判定(吃子对象是否为对方棋子&&是否为合法移动)，返回值为Boolean值
+        System.out.println(chessComponent.getChessColor() != chessboard.getCurrentColor() );
         return chessComponent.getChessColor() != chessboard.getCurrentColor() &&
                 first.canMoveTo(chessboard.getChessComponents(), chessComponent.getChessboardPoint());
     }

@@ -92,9 +92,10 @@ public class QueenChessComponent extends ChessComponent {
                         legalpoints.add(legalpoint);
                     }
                     isCrossRowUp=true;
+                }else{
+                    legalpoint = new ChessboardPoint(row - i, col);
+                    legalpoints.add(legalpoint);
                 }
-                legalpoint = new ChessboardPoint(row - i, col);
-                legalpoints.add(legalpoint);
             }
             if(!isCrossRowDown&&row+i<=7){
                 if(!(chessComponents[row+i][col] instanceof  EmptySlotComponent)) {
@@ -103,9 +104,11 @@ public class QueenChessComponent extends ChessComponent {
                         legalpoints.add(legalpoint);
                     }
                     isCrossRowDown=true;
+                }else{
+                    legalpoint = new ChessboardPoint(row + i, col);
+                    legalpoints.add(legalpoint);
                 }
-                legalpoint = new ChessboardPoint(row + i, col);
-                legalpoints.add(legalpoint);
+
             }
             if(!isCrossColUp&&col-i>=0){
                 if(!(chessComponents[row][col-i] instanceof  EmptySlotComponent)) {
@@ -114,9 +117,10 @@ public class QueenChessComponent extends ChessComponent {
                         legalpoints.add(legalpoint);
                     }
                     isCrossColUp=true;
+                }else{
+                    legalpoint = new ChessboardPoint(row, col-i);
+                    legalpoints.add(legalpoint);
                 }
-                legalpoint = new ChessboardPoint(row, col-i);
-                legalpoints.add(legalpoint);
             }
             if(!isCrossColDown&&col+i<=7){
                 if(!(chessComponents[row][col+i] instanceof  EmptySlotComponent)) {
@@ -126,8 +130,10 @@ public class QueenChessComponent extends ChessComponent {
                     }
                     isCrossColDown=true;
                 }
-                legalpoint = new ChessboardPoint(row, col+i);
-                legalpoints.add(legalpoint);
+                else{
+                    legalpoint = new ChessboardPoint(row, col+i);
+                    legalpoints.add(legalpoint);
+                }
             }
         }
 //Bishop check
@@ -136,7 +142,7 @@ public class QueenChessComponent extends ChessComponent {
             //斜角判定，为了降低难度，即便计算值超出棋盘也没有关系，demo已经确保click不会记录超出棋盘的位置。
             //1 3象限斜角判定
             //我们将录入所有合法落子点
-            if(destination.getX()-i==source.getX()&&destination.getY()-i==source.getY()){
+//            if(destination.getX()-i==source.getX()&&destination.getY()-i==source.getY()){
 
                 //朝左上角检索
                 for (int j = 1; j < 8; j++) {
@@ -190,7 +196,7 @@ public class QueenChessComponent extends ChessComponent {
 //
 //                //若运行到此处，则表示：满足斜角，没有越过棋子
 
-            }
+
             //2 4象限斜角判定
 
 
@@ -200,6 +206,7 @@ public class QueenChessComponent extends ChessComponent {
 
             //特别地，若range==1，for代码块将自动跳过，表示落点恰好挨着棋子原点，无需判定。
             //向左上方移动
+
             for (int j = 1; j < 8; j++) {
                 if(row-j<0||col+j>7){
                     break;
@@ -239,10 +246,16 @@ public class QueenChessComponent extends ChessComponent {
         }
 
         for (int i = 0; i < legalpoints.size(); i++) {
+
             if(chessComponents[legalpoints.get(i).getX()][legalpoints.get(i).getY()].getChessColor()==chessColor){
                 legalpoints.remove(i);
                 i--;
             }
+//            if(i+1<legalpoints.size()&&legalpoints.size()>1){
+//                if(legalpoints.get(i).getX()==legalpoints.get(i+1).getX()&&legalpoints.get(i).getY()==legalpoints.get(i+1).getY()){
+//                    legalpoints.remove(i);i--;
+//                }
+//            }
         }
 
         for (int i = 0; i < legalpoints.size(); i++) {

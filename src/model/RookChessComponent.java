@@ -103,9 +103,10 @@ public class RookChessComponent extends ChessComponent {
                         legalpoints.add(legalpoint);
                     }
                     isCrossRowUp=true;
+                }else{
+                    legalpoint = new ChessboardPoint(row - i, col);
+                    legalpoints.add(legalpoint);
                 }
-                legalpoint = new ChessboardPoint(row - i, col);
-                legalpoints.add(legalpoint);
             }
             if(!isCrossRowDown&&row+i<=7){
                 if(!(chessComponents[row+i][col] instanceof  EmptySlotComponent)) {
@@ -114,9 +115,11 @@ public class RookChessComponent extends ChessComponent {
                         legalpoints.add(legalpoint);
                     }
                     isCrossRowDown=true;
+                }else{
+                    legalpoint = new ChessboardPoint(row + i, col);
+                    legalpoints.add(legalpoint);
                 }
-                legalpoint = new ChessboardPoint(row + i, col);
-                legalpoints.add(legalpoint);
+
             }
             if(!isCrossColUp&&col-i>=0){
                 if(!(chessComponents[row][col-i] instanceof  EmptySlotComponent)) {
@@ -125,9 +128,10 @@ public class RookChessComponent extends ChessComponent {
                         legalpoints.add(legalpoint);
                     }
                     isCrossColUp=true;
+                }else{
+                    legalpoint = new ChessboardPoint(row, col-i);
+                    legalpoints.add(legalpoint);
                 }
-                legalpoint = new ChessboardPoint(row, col-i);
-                legalpoints.add(legalpoint);
             }
             if(!isCrossColDown&&col+i<=7){
                 if(!(chessComponents[row][col+i] instanceof  EmptySlotComponent)) {
@@ -137,15 +141,23 @@ public class RookChessComponent extends ChessComponent {
                     }
                     isCrossColDown=true;
                 }
-                legalpoint = new ChessboardPoint(row, col+i);
-                legalpoints.add(legalpoint);
+                else{
+                    legalpoint = new ChessboardPoint(row, col+i);
+                    legalpoints.add(legalpoint);
+                }
             }
         }
         for (int i = 0; i < legalpoints.size(); i++) {
+
             if(chessComponents[legalpoints.get(i).getX()][legalpoints.get(i).getY()].getChessColor()==chessColor){
                 legalpoints.remove(i);
                 i--;
             }
+//            if(i+1<legalpoints.size()&&legalpoints.size()>1){
+//                if(legalpoints.get(i).getX()==legalpoints.get(i+1).getX()&&legalpoints.get(i).getY()==legalpoints.get(i+1).getY()){
+//                    legalpoints.remove(i);i--;
+//                }
+//            }
         }
 
         for (int i = 0; i < legalpoints.size(); i++) {
