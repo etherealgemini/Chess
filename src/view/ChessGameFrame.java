@@ -2,6 +2,7 @@ package view;
 
 import controller.GameController;
 import controller.task3function;
+import model.ChessColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +36,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         addLoadButton();
         addRestartGameButton();
         addUndoButton();
+        addMonkeyAIButton();
     }
 
 
@@ -110,7 +112,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
     private void addUndoButton(){
         // Z 悔棋按钮
         JButton button = new JButton("Undo");
-        button.setLocation(HEIGTH, HEIGTH / 10 + 500);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 480);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -118,11 +120,41 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         button.addActionListener(e -> {
             System.out.println("Click undo");
             task3function.undo(gameController.getChessboard(),gameController.getChessboard().getClickController().getHistory());
-
+            // Z 需要帮AI也悔一次棋，否则产生bug
+            if(gameController.getChessboard().getClickController().isRandomAI()){
+//                System.out.println("evoke undo twice");
+                task3function.undo(gameController.getChessboard(),gameController.getChessboard().getClickController().getHistory());
+            }
         });
     }
 
 
+    private void addMonkeyAIButton(){
+        // Z 选择是否交由AI（简单模式）行棋
+        JButton button = new JButton("MonkeyAI");
+        button.setLocation(20,15);
+        button.setSize(150, 30);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Choose MonkeyAI");
+            gameController.getChessboard().getClickController().setRandomAI(true);
+//            Object[] options={"黑","白"};
+//            int m = JOptionPane.showOptionDialog(this,"选择AI的行棋方","MonkeyAI",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options,options[0]);
+//            System.out.println(m);
+//            switch (m){
+//                case 0: gameController.getChessboard().getClickController().setAIcolor(ChessColor.BLACK);break;
+//                case 1: gameController.getChessboard().getClickController().setAIcolor(ChessColor.WHITE);break;
+//                default:break;
+//            }
+            // Z 避免出现AI行棋方与当前行棋方相同的异常。
+            ChessColor aicolor = gameController.getChessboard().getClickController().getAIcolor();
+            if(aicolor==gameController.getChessboard().getCurrentColor()){
+                gameController.getChessboard().getClickController().setAIcolor(aicolor==ChessColor.BLACK?ChessColor.WHITE:ChessColor.BLACK);
+            }
+        });
+    }
 
 
 }

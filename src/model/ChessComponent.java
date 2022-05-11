@@ -61,6 +61,17 @@ public abstract class ChessComponent extends JComponent {
         this.selected = false;
         this.clickController = clickController;
     }
+    protected ChessComponent(ChessboardPoint chessboardPoint, Point location,int size) {
+        enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+        setLocation(location);
+        setSize(size, size);
+        this.chessColor=ChessColor.NONE;
+        this.chessboardPoint = chessboardPoint;
+        this.selected = false;
+    }
+    public ChessColor getChessColor() {
+        return chessColor;
+    }
 
     public ChessboardPoint getChessboardPoint() {
         return chessboardPoint;
@@ -70,9 +81,6 @@ public abstract class ChessComponent extends JComponent {
         this.chessboardPoint = chessboardPoint;
     }
 
-    public ChessColor getChessColor() {
-        return chessColor;
-    }
 
     public boolean isSelected() {
         return selected;

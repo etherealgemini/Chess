@@ -96,6 +96,8 @@ public class Chessboard extends JComponent {
         initQueenOnBoard(CHESSBOARD_SIZE - 1,3,ChessColor.WHITE);
         initKingOnBoard(0,4,ChessColor.BLACK);
         initKingOnBoard(CHESSBOARD_SIZE - 1, 4,ChessColor.WHITE);
+        initLegalPointOnBoard(1,0,ChessColor.NONE);
+
     }
 
     public ChessComponent[][] getChessComponents() {
@@ -117,6 +119,15 @@ public class Chessboard extends JComponent {
             remove(chessComponents[row][col]);
         }
         add(chessComponents[row][col] = chessComponent);
+    }
+
+    /**
+     * 该方法实现放置棋子，不会覆盖掉原棋子，且棋盘数组中不会存储该棋子信息。目前仅用于放置合法落子点标记。
+     * @param chessComponent
+     */
+    public void addChessOnBoard(ChessComponent chessComponent) {
+        int row = chessComponent.getChessboardPoint().getX(), col = chessComponent.getChessboardPoint().getY();
+        add(chessComponent);
     }
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
@@ -151,6 +162,13 @@ public class Chessboard extends JComponent {
     public void swapColor() {
         //黑方先走，每次走棋后换方
         currentColor = currentColor == ChessColor.BLACK ? ChessColor.WHITE : ChessColor.BLACK;
+    }
+
+    //for test
+    private void initLegalPointOnBoard(int row, int col, ChessColor color) {
+        ChessComponent chessComponent = new LegalPointComponent(new ChessboardPoint(row, col), calculatePoint(row, col),clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        addChessOnBoard(chessComponent);
     }
 
     private void initRookOnBoard(int row, int col, ChessColor color) {
