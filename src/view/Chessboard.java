@@ -64,6 +64,11 @@ public class Chessboard extends JComponent {
         // FIXME: Initialize chessboard for testing only.
 
         // Y 初始化各类棋子在棋盘上的位置
+        initiateAllChessComponents();
+
+    }
+
+    public void initiateAllChessComponents(){
         initPawnOnBoard(1, 0, ChessColor.BLACK);
         initPawnOnBoard(1, 1, ChessColor.BLACK);
         initPawnOnBoard(1, 2, ChessColor.BLACK);
@@ -97,6 +102,9 @@ public class Chessboard extends JComponent {
         initKingOnBoard(0,4,ChessColor.BLACK);
         initKingOnBoard(CHESSBOARD_SIZE - 1, 4,ChessColor.WHITE);
     }
+
+
+
 
     public ChessComponent[][] getChessComponents() {
         return chessComponents;
@@ -207,5 +215,71 @@ public class Chessboard extends JComponent {
      */
     public void loadGame(List<String> chessData) {
         chessData.forEach(System.out::println);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                // 黑方的象
+                if (chessData.get(i).charAt(j) == 'B'){
+                    initBishopOnBoard(i,j,ChessColor.BLACK);
+                }
+                //白方的象
+                if (chessData.get(i).charAt(j) == 'b'){
+                    initBishopOnBoard(i,j,ChessColor.WHITE);
+                }
+                //黑方的王
+                if (chessData.get(i).charAt(j) == 'K'){
+                   initKingOnBoard(i,j,ChessColor.BLACK);
+                }
+                //白方的王
+                if (chessData.get(i).charAt(j) == 'k'){
+                    initKingOnBoard(i,j,ChessColor.WHITE);
+                }
+                //黑方的骑士
+                if (chessData.get(i).charAt(j) == 'N'){
+                 initKnightOnBoard(i,j,ChessColor.BLACK);
+                }
+                //白方的骑士
+                if (chessData.get(i).charAt(j) == 'n'){
+                 initKnightOnBoard(i,j,ChessColor.WHITE);
+                }
+                //黑方的兵
+                if (chessData.get(i).charAt(j) == 'P'){
+                  initPawnOnBoard(i,j,ChessColor.BLACK);
+                }
+                //白方的兵
+                if (chessData.get(i).charAt(j) == 'p'){
+                   initPawnOnBoard(i,j,ChessColor.WHITE);
+                }
+                //黑方的皇后
+                if (chessData.get(i).charAt(j) == 'Q'){
+                  initQueenOnBoard(i,j,ChessColor.BLACK);
+                }
+                //白方的皇后
+                if (chessData.get(i).charAt(j) == 'q'){
+                   initQueenOnBoard(i,j,ChessColor.WHITE);
+                }
+                //黑方的车
+                if (chessData.get(i).charAt(j) == 'R'){
+                  initRookOnBoard(i,j,ChessColor.BLACK);
+                }
+                //白方的车
+                if (chessData.get(i).charAt(j) == 'r'){
+                   initRookOnBoard(i,j,ChessColor.WHITE);
+                }
+                //空的，没有棋子
+//                if (chessData.get(i).charAt(j) == 'E'){
+//
+//                }
+            }
+
+        }
+        //黑方执棋
+        if (chessData.get(8).charAt(0) == '0'){
+            currentColor = ChessColor.BLACK;
+        }
+        //白方执棋
+        if (chessData.get(8).charAt(0) == '1'){
+            currentColor = ChessColor.WHITE;
+        }
+
     }
 }

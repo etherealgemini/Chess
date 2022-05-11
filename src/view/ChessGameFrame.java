@@ -2,6 +2,7 @@ package view;
 
 import controller.GameController;
 import controller.task3function;
+import model.ChessColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +36,10 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         addLoadButton();
         addRestartGameButton();
         addUndoButton();
+        addFileButton();
+
+
+
     }
 
 
@@ -52,12 +57,15 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
      * 在游戏面板中添加标签
      */
     private void addLabel() { //（Y）窗口创建文本框
-        JLabel statusLabel = new JLabel("Sample label");
+        JLabel statusLabel = new JLabel("Black");
         statusLabel.setLocation(HEIGTH, HEIGTH / 10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(statusLabel); // Y 让该标签添加到窗体中
     }
+
+
+
 
     /**
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
@@ -72,7 +80,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
 
 
         });
-        button.setLocation(HEIGTH, HEIGTH / 10 + 120);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 60);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -80,7 +88,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
 
     private void addLoadButton() {
         JButton button = new JButton("Load");
-        button.setLocation(HEIGTH, HEIGTH / 10 + 240);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 150);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -88,14 +96,16 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         button.addActionListener(e -> {
             System.out.println("Click load");
             String path = JOptionPane.showInputDialog(this,"Input Path here");
+            gameController.getChessboard().initiateEmptyChessboard();
             gameController.loadGameFromFile(path);//在该方法中完成文件的读取
+            gameController.getChessboard().repaint();
         });
     }
 
     //Y 新加入的重新开始游戏的按钮
     private void addRestartGameButton() {
         JButton button = new JButton("Restart");
-        button.setLocation(HEIGTH, HEIGTH / 10 + 360);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 250);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -104,13 +114,19 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             System.out.println("Click restart");
             JOptionPane.showMessageDialog(this, "点击确认重开一局");
            // Y 写方法初始化游戏
+            gameController.getChessboard().initiateEmptyChessboard();
+            gameController.getChessboard().initiateAllChessComponents();
+            gameController.getChessboard().repaint();
+
+
+
         });
     }
 
     private void addUndoButton(){
         // Z 悔棋按钮
         JButton button = new JButton("Undo");
-        button.setLocation(HEIGTH, HEIGTH / 10 + 500);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 350);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -120,6 +136,24 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             task3function.undo(gameController.getChessboard(),gameController.getChessboard().getClickController().getHistory());
 
         });
+    }
+
+    private void addFileButton(){
+        // Y 游戏存档按钮
+        JButton button = new JButton("File");
+        button.setLocation(HEIGTH, HEIGTH / 10 + 450);
+        button.setSize(200, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Click file");
+            String path = JOptionPane.showInputDialog(this,"Input Path here");
+            gameController.storeGameToFile("save\\GameFile.txt");
+        });
+
+
+
     }
 
 
