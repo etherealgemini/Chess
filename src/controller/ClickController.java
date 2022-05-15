@@ -21,6 +21,8 @@ public class ClickController {
     /**
      * Arraylist 历史记录列表
      */
+
+
     private ArrayList<History> history = new ArrayList<>();
 
 
@@ -31,7 +33,6 @@ public class ClickController {
     public ClickController(Chessboard chessboard) {
         this.chessboard = chessboard;
     }
-
 
     /**
      * 该方法实现响应针对棋盘上发生的鼠标点击事件
@@ -124,6 +125,9 @@ public class ClickController {
 
     public static int getHistoryCnt() {
         return historyCnt;
+    }
+    public static boolean isHistoryCntOdd (){
+        return historyCnt % 2 == 1;
     }
 
     public ArrayList<History> getHistory() {

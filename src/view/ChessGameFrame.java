@@ -1,11 +1,14 @@
 package view;
 
+import controller.ClickController;
 import controller.GameController;
 import controller.task3function;
 import model.ChessColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
@@ -31,12 +34,12 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
 
 
         addChessboard();
-        addLabel();
         addHelloButton();
         addLoadButton();
         addRestartGameButton();
         addUndoButton();
         addFileButton();
+        addLabel();
 
 
 
@@ -56,14 +59,22 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
     /**
      * 在游戏面板中添加标签
      */
+
+
+
+
+
+
+
     private void addLabel() { //（Y）窗口创建文本框
-        JLabel statusLabel = new JLabel("Black");
+       JLabel statusLabel = new JLabel("Black");
         statusLabel.setLocation(HEIGTH, HEIGTH / 10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
-        add(statusLabel); // Y 让该标签添加到窗体中
-    }
+        add(statusLabel);
 
+
+    }
 
 
 
@@ -97,7 +108,8 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             System.out.println("Click load");
             String path = JOptionPane.showInputDialog(this,"Input Path here");
             gameController.getChessboard().initiateEmptyChessboard();
-            gameController.loadGameFromFile(path);//在该方法中完成文件的读取
+            String feedback = gameController.loadGameFromFile(path);//在该方法中完成文件的读取
+            JOptionPane.showMessageDialog(null,feedback);
             gameController.getChessboard().repaint();
         });
     }
@@ -149,10 +161,8 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         button.addActionListener(e -> {
             System.out.println("Click file");
             String path = JOptionPane.showInputDialog(this,"Input Path here");
-            gameController.storeGameToFile("save\\GameFile.txt");
+            gameController.storeGameToFile(path);
         });
-
-
 
     }
 

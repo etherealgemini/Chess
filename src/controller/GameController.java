@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -99,7 +100,29 @@ public class GameController {
         }
         //写入文件
         try {
-            FileWriter fileWriter = new FileWriter(new File(path));
+            File file = new File(path);
+            if (!file.exists()){
+                if (file.mkdirs()){
+                    System.out.println("创建"+path + "成功");
+                }
+                else {
+                    System.out.println("创建"+path+"失败");
+                }
+            }
+            String finalPath = path + "\\GameFile.txt";
+
+            file = new File(finalPath);
+            if (!file.exists()){
+               if(file.createNewFile()) {
+                   System.out.println("创建"+path + "成功");
+               }
+               else {
+                   System.out.println("创建"+path+"失败");
+               }
+
+            }
+
+            FileWriter fileWriter = new FileWriter(finalPath);
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     fileWriter.append(coordinate[i][j]);
@@ -127,15 +150,60 @@ public class GameController {
      * @return
      */
 
-    public List<String> loadGameFromFile(String path) {
+    public String loadGameFromFile(String path) {
         try {
+            path = path + "\\GameFile.txt";
             List<String> chessData = Files.readAllLines(Path.of(path));
+            //判断棋盘是不是8*8
+           boolean isEightColumn = true;
+            for (int i = 0; i < 8; i++) {
+                if (chessData.get(i).length() != 8) {
+                    isEightColumn = false;
+                    break;
+                }
+            }
+            if (!isEightColumn || chessData.size() !=9){
+
+                return "错误类型：101";
+            }
+            else {
+            //判断棋子是否六种棋子之一
+                boolean isChessPieces = true;
+                int up = 0;
+                int low = 0;
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    char c = chessData.get(i).charAt(j);
+                  if (c!='B' && c!='K'&&c!='N'&& c!='P'&& c!='Q'&& c!='R'&& c!='E'&& c!='b'&& c!='k'&& c!='n'&& c!='p'&& c!='q'&& c!='r'){
+                      isChessPieces = false;
+                      break;
+                  }
+                  if (Character.isUpperCase(c)){
+                      up++;
+                  }
+                  if (Character.isLowerCase(c)){
+                      low++;
+                  }
+                }
+            }
+            if (!isChessPieces || up == 0 || low == 0){
+
+                return "错误类型：102";
+            }
+            else {
+               if (chessData.size() < 9 || chessData.get(8).length()!= 1 || (chessData.get(8).charAt(0)!='0' &&chessData.get(8).charAt(0)!= '1')){
+                   return "错误类型：103";
+                }
+            }
+            }
+
             chessboard.loadGame(chessData);//在该方法中实现游戏数据的载入
-            return chessData;
+            return "Successful!";
         } catch (IOException e) {
             e.printStackTrace();
+
         }
-        return null;
+        return "错误类型：104";
     }
 
 }
