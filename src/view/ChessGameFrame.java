@@ -40,7 +40,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         addUndoButton();
         addFileButton();
         addLabel();
-
+        addMonkeyAIButton();
 
 
     }
@@ -75,8 +75,6 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
 
 
     }
-
-
 
     /**
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
@@ -154,6 +152,32 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
 
 
 
+    private void addMonkeyAIButton(){
+        // Z 选择是否交由AI（简单模式）行棋
+        JButton button = new JButton("MonkeyAI");
+        button.setLocation(20,15);
+        button.setSize(150, 30);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Choose MonkeyAI");
+            gameController.getChessboard().getClickController().setRandomAI(true);
+//            Object[] options={"黑","白"};
+//            int m = JOptionPane.showOptionDialog(this,"选择AI的行棋方","MonkeyAI",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options,options[0]);
+//            System.out.println(m);
+//            switch (m){
+//                case 0: gameController.getChessboard().getClickController().setAIcolor(ChessColor.BLACK);break;
+//                case 1: gameController.getChessboard().getClickController().setAIcolor(ChessColor.WHITE);break;
+//                default:break;
+//            }
+            // Z 避免出现AI行棋方与当前行棋方相同的异常。
+            ChessColor aicolor = gameController.getChessboard().getClickController().getAIcolor();
+            if(aicolor==gameController.getChessboard().getCurrentColor()){
+                gameController.getChessboard().getClickController().setAIcolor(aicolor==ChessColor.BLACK?ChessColor.WHITE:ChessColor.BLACK);
+            }
+        });
+    }
 
 
 

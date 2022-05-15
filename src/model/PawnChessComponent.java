@@ -138,7 +138,7 @@ public class PawnChessComponent extends ChessComponent {
         int row = getChessboardPoint().getX();
         int col = getChessboardPoint().getY();
 
-//        System.out.println("Row :"+row+" Col: "+col);
+
 
         for (int i = 0; i < origin.size(); i++) {
             if(row==origin.get(i).getX()&&col==origin.get(i).getY()){

@@ -6,6 +6,7 @@ import view.ChessboardPoint;
 
 
 import javax.sound.sampled.SourceDataLine;
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -106,7 +107,7 @@ public class ClickController {
                 System.out.println(enemyColor);
                 if(isCheckMate(chessboard,enemyColor)){
                     //TODO:在这里发生将死后的事件
-                    System.out.println(enemyColor+" is defeated!");
+                    JOptionPane.showMessageDialog(chessboard,enemyColor+"负");
                 }
 
                 //reset the first (selected chess)
