@@ -295,5 +295,6 @@ public class Chessboard extends JComponent {
             currentColor = ChessColor.WHITE;
         }
 
+
     }
 }

@@ -7,7 +7,6 @@ import model.ChessColor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 
 /**
@@ -107,7 +106,11 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             String path = JOptionPane.showInputDialog(this,"Input Path here");
             gameController.getChessboard().initiateEmptyChessboard();
             String feedback = gameController.loadGameFromFile(path);//在该方法中完成文件的读取
-            JOptionPane.showMessageDialog(null,feedback);
+            JOptionPane.showMessageDialog( null,feedback);
+          if (!feedback.equals("Successful!")){
+              gameController.getChessboard().initiateEmptyChessboard();
+              gameController.getChessboard().initiateAllChessComponents();
+          }
             gameController.getChessboard().repaint();
         });
     }
@@ -124,6 +127,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             System.out.println("Click restart");
             JOptionPane.showMessageDialog(this, "点击确认重开一局");
            // Y 写方法初始化游戏
+
             gameController.getChessboard().initiateEmptyChessboard();
             gameController.getChessboard().initiateAllChessComponents();
             gameController.getChessboard().repaint();
@@ -133,7 +137,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         });
     }
 
-    private void addUndoButton(){
+    private void addUndoButton() {
         // Z 悔棋按钮
         JButton button = new JButton("Undo");
         button.setLocation(HEIGTH, HEIGTH / 10 + 350);
@@ -143,7 +147,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
 
         button.addActionListener(e -> {
             System.out.println("Click undo");
-            task3function.undo(gameController.getChessboard(),gameController.getChessboard().getClickController().getHistory());
+            task3function.undo(gameController.getChessboard(), gameController.getChessboard().getClickController().getHistory());
 
         });
     }
@@ -178,143 +182,6 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             }
         });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
