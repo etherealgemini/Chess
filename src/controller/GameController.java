@@ -141,8 +141,6 @@ public class GameController {
 
 
 
-
-
     /**
      * 该方法将实现存档读取，当然，你可以在这里配合其他方法实现错误存档检测等内容
      * @param path 存档文件路径
@@ -151,6 +149,7 @@ public class GameController {
 
     public String loadGameFromFile(String path) {
         try {
+
             path = path + "\\GameFile.txt";
             List<String> chessData = Files.readAllLines(Path.of(path));
             //判断棋盘是不是8*8
@@ -198,11 +197,13 @@ public class GameController {
 
             chessboard.loadGame(chessData);//在该方法中实现游戏数据的载入
             return "Successful!";
+
+
         } catch (IOException e) {
             e.printStackTrace();
-
+            return "错误类型：104";
         }
-        return "错误类型：104";
+
     }
 
 }
