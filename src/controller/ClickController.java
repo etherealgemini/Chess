@@ -102,6 +102,12 @@ public class ClickController {
                     undo(chessboard,history);
                 }
 
+                ChessColor enemy1Color = chessboard.getCurrentColor()==ChessColor.BLACK?ChessColor.WHITE:ChessColor.BLACK;
+                boolean EnemyisCheckAfterMove = isCheck(chessboard,enemy1Color);
+                if(EnemyisCheckAfterMove){
+                    JOptionPane.showMessageDialog(chessboard,enemy1Color+" Check!");
+                }
+
                 //change side 更换行棋方
                 chessboard.swapColor();
 
