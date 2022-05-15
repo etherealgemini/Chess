@@ -7,6 +7,8 @@ import model.ChessColor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 
 /**
@@ -19,7 +21,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
     private final int HEIGTH;
     public final int CHESSBOARD_SIZE;
     private GameController gameController;
-
+    private JLabel statusLabel ;
     public ChessGameFrame(int width, int height) {
         setTitle("2022 CS102A Project Demo"); //设置标题
         this.WIDTH = width;
@@ -45,29 +47,43 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
     }
 
 
+
+
     /**
      * 在游戏面板中添加棋盘
      */
     private void addChessboard() {
         Chessboard chessboard = new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE);
         gameController = new GameController(chessboard);
-
+        gameController.getChessboard().getClickController().setChessGameFrame(this);
         chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
         add(chessboard);
+    }
+
+    public JLabel getStatusLabel() {
+        return statusLabel;
     }
 
     /**
      * 在游戏面板中添加标签
      */
 
+
+
+
+
+
+
     private void addLabel() { //（Y）窗口创建文本框
-       JLabel statusLabel = new JLabel("Black");
+        if (gameController.getChessboard().getCurrentColor()==ChessColor.BLACK){
+        statusLabel = new JLabel("Black");}
+        else {
+            statusLabel = new JLabel("White");
+        }
         statusLabel.setLocation(HEIGTH, HEIGTH / 10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(statusLabel);
-
-
     }
 
     /**
@@ -102,9 +118,11 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             gameController.getChessboard().initiateEmptyChessboard();
             String feedback = gameController.loadGameFromFile(path);//在该方法中完成文件的读取
             JOptionPane.showMessageDialog( null,feedback);
-          if (!feedback.equals("Successful!")){
+          if (!feedback.equals("Successful!")) {
               gameController.getChessboard().initiateEmptyChessboard();
               gameController.getChessboard().initiateAllChessComponents();
+
+
           }
             gameController.getChessboard().repaint();
         });
@@ -122,9 +140,9 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             System.out.println("Click restart");
             JOptionPane.showMessageDialog(this, "点击确认重开一局");
            // Y 写方法初始化游戏
-
             gameController.getChessboard().initiateEmptyChessboard();
             gameController.getChessboard().initiateAllChessComponents();
+            gameController.getChessboard().setCurrentColor(ChessColor.WHITE);
             gameController.getChessboard().repaint();
 
 
@@ -195,7 +213,6 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         });
 
     }
-
 
 
 

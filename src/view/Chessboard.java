@@ -116,6 +116,10 @@ public class Chessboard extends JComponent {
         return currentColor;
     }
 
+    public void setCurrentColor(ChessColor currentColor) {
+        this.currentColor = currentColor;
+    }
+
     /**
      * 该方法实现放置棋子，并以完全覆盖的方式放置。
      * @param chessComponent
@@ -289,10 +293,12 @@ public class Chessboard extends JComponent {
         //黑方执棋
         if (chessData.get(8).charAt(0) == '0'){
             currentColor = ChessColor.BLACK;
+            clickController.getChessGameFrame().getStatusLabel().setText("Black");
         }
         //白方执棋
         if (chessData.get(8).charAt(0) == '1'){
             currentColor = ChessColor.WHITE;
+            clickController.getChessGameFrame().getStatusLabel().setText("White");
         }
 
 

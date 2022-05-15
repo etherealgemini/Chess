@@ -21,11 +21,16 @@ public class ClickController {
      * int 历史记录指针
      */
     static int historyCnt;
+
+    public void setChessGameFrame(ChessGameFrame chessGameFrame) {
+        this.chessGameFrame = chessGameFrame;
+    }
+
     /**
      * Arraylist 历史记录列表
      */
 
-
+   private ChessGameFrame chessGameFrame;
     private ArrayList<History> history = new ArrayList<>();
 
     /**
@@ -42,7 +47,9 @@ public class ClickController {
 
     private ChessComponent first;
 
-    private ChessGameFrame chessGameFrame;
+    public ChessGameFrame getChessGameFrame() {
+        return chessGameFrame;
+    }
 
     public ClickController(Chessboard chessboard) {
         this.chessboard = chessboard;
@@ -69,6 +76,14 @@ public class ClickController {
                 recordFirst.repaint();
             } else if (handleSecond(chessComponent)) {
                 System.out.println(chessboard.getCurrentColor());
+//加入setText方法
+                if (isHistoryCntOdd()){
+                chessGameFrame.getStatusLabel().setText("White");}
+                else {
+                    chessGameFrame.getStatusLabel().setText("Black");
+                }
+
+
 
                 //这里的chessComponent表示目标位置的棋子（包括空白）及其所有属性，first是被移动(被红圈选中的)棋子。
 
