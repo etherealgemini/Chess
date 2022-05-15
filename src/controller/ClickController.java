@@ -32,7 +32,7 @@ public class ClickController {
     private boolean isRandomAI = false;
 
     /**
-     * 你指定的AI行棋方
+     * AI行棋方
      */
     private ChessColor AIcolor = ChessColor.WHITE;
 
@@ -64,8 +64,8 @@ public class ClickController {
                 first = null;
                 recordFirst.repaint();
             } else if (handleSecond(chessComponent)) {
+                System.out.println(chessboard.getCurrentColor());
 
-                System.out.println("here");
                 //这里的chessComponent表示目标位置的棋子（包括空白）及其所有属性，first是被移动(被红圈选中的)棋子。
 
                 //一旦通过handleSecond检测，即表示该次行棋合法，且将被执行
