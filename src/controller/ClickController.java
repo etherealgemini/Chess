@@ -22,6 +22,7 @@ public class ClickController {
      */
     static int historyCnt;
 
+
     public void setChessGameFrame(ChessGameFrame chessGameFrame) {
         this.chessGameFrame = chessGameFrame;
     }
@@ -77,7 +78,7 @@ public class ClickController {
             } else if (handleSecond(chessComponent)) {
                 System.out.println(chessboard.getCurrentColor());
 //加入setText方法
-                if (isHistoryCntOdd()){
+                if (chessboard.getCurrentColor()==ChessColor.BLACK){
                 chessGameFrame.getStatusLabel().setText("White");}
                 else {
                     chessGameFrame.getStatusLabel().setText("Black");
@@ -219,9 +220,6 @@ public class ClickController {
 
     public static int getHistoryCnt() {
         return historyCnt;
-    }
-    public static boolean isHistoryCntOdd (){
-        return historyCnt % 2 == 1;
     }
 
     public ArrayList<History> getHistory() {

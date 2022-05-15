@@ -117,7 +117,8 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             String path = JOptionPane.showInputDialog(this,"Input Path here");
             gameController.getChessboard().initiateEmptyChessboard();
             String feedback = gameController.loadGameFromFile(path);//在该方法中完成文件的读取
-            JOptionPane.showMessageDialog( null,feedback);
+            if (feedback!=null){
+            JOptionPane.showMessageDialog( this,feedback);}
           if (!feedback.equals("Successful!")) {
               gameController.getChessboard().initiateEmptyChessboard();
               gameController.getChessboard().initiateAllChessComponents();
@@ -143,6 +144,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             gameController.getChessboard().initiateEmptyChessboard();
             gameController.getChessboard().initiateAllChessComponents();
             gameController.getChessboard().setCurrentColor(ChessColor.WHITE);
+            statusLabel.setText("White");
             gameController.getChessboard().repaint();
 
 

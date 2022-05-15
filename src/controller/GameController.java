@@ -149,7 +149,10 @@ public class GameController {
 
     public String loadGameFromFile(String path) {
         try {
-
+            if (path == null){
+                return null;
+            }
+            else{
             path = path + "\\GameFile.txt";
             List<String> chessData = Files.readAllLines(Path.of(path));
             //判断棋盘是不是8*8
@@ -199,7 +202,7 @@ public class GameController {
             return "Successful!";
 
 
-        } catch (IOException e) {
+        }} catch (IOException e) {
             e.printStackTrace();
             return "错误类型：104";
         }
