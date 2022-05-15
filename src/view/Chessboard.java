@@ -96,7 +96,7 @@ public class Chessboard extends JComponent {
         initQueenOnBoard(CHESSBOARD_SIZE - 1,3,ChessColor.WHITE);
         initKingOnBoard(0,4,ChessColor.BLACK);
         initKingOnBoard(CHESSBOARD_SIZE - 1, 4,ChessColor.WHITE);
-        initLegalPointOnBoard(1,0,ChessColor.NONE);
+//        initLegalPointOnBoard(1,0,ChessColor.NONE);
 
     }
 
@@ -165,11 +165,6 @@ public class Chessboard extends JComponent {
     }
 
     //for test
-    private void initLegalPointOnBoard(int row, int col, ChessColor color) {
-        ChessComponent chessComponent = new LegalPointComponent(new ChessboardPoint(row, col), calculatePoint(row, col),clickController, CHESS_SIZE);
-        chessComponent.setVisible(true);
-        addChessOnBoard(chessComponent);
-    }
 
     private void initRookOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new RookChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
