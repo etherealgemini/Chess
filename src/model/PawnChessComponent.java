@@ -181,7 +181,7 @@ public class PawnChessComponent extends ChessComponent {
 //        boolean isInRowUpperBound = row+1<=7;
 //        boolean isInRowLowerBound = row-1>=0;
         firstMove = isPawnFirstMove();
-        System.out.println("Firstmove = "+firstMove);
+//        System.out.println("Firstmove = "+firstMove);
         //检测：若为 非第一回合 且 上一回合为走兵 且 上一回合走兵走两格 则为真
         boolean instanceBypass = ClickController.getHistoryCnt()-1>=0 && getClickController().getHistory().get(ClickController.getHistoryCnt()-1).getChess0() instanceof PawnChessComponent &&
                 ((PawnChessComponent) getClickController().getHistory().get(ClickController.getHistoryCnt()-1).getChess0()).isDoubleMove();

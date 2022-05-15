@@ -9,6 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static controller.ClickController.historyCnt;
+import static controller.History.inputHistory;
 
 /**
  * 该类为工具类，实现task3相关的所有功能，提供静态方法。<br>
@@ -143,7 +144,7 @@ public class task3function {
      * 例如：指定白方，那么判定白方能否通过移动王来脱离将军。
      */
     public static boolean canMoveKing(Chessboard chessboard, ChessColor chessColor){
-        //FIXME: 该方法将导致王被真实移动而没有被复原！！
+        ChessComponent[][] chessComponents = chessboard.getChessComponents();
         for (int i = 0; i < chessboard.getCHESSBOARD_SIZE(); i++) {
             for (int j = 0; j < chessboard.getCHESSBOARD_SIZE(); j++) {
                 ChessComponent chess1 = chessboard.getChessComponents()[i][j];
@@ -153,29 +154,43 @@ public class task3function {
                         for (int l = 0; l < chessboard.getCHESSBOARD_SIZE(); l++) {
                             ChessComponent chess2 = chessboard.getChessComponents()[k][l];
 
-                            if(chess1.canMoveTo(chessboard.getChessComponents(),chess2.getChessboardPoint())&&chess2.getChessColor()!=chessColor){
-                                ChessComponent mightDead = null;
+                            if(chess1.canMoveTo(chessboard.getChessComponents(),chess2.getChessboardPoint())){
                                 ChessComponent src = createCopy(chessboard,chess1);
                                 ChessComponent dest = createCopy(chessboard,chess2);
 
+                                inputHistory(chessboard,chessboard.getClickController().getHistory(),src,dest,null);
 
                                 chessboard.swapChessComponents(chess1,chess2);
 
+
                                 if(isCheck(chessboard,chessColor)){
                                     //若尝试移动后仍被将军，先恢复棋盘，再继续操作
-                                    chessboard.putChessOnBoard(src);
-                                    chessboard.putChessOnBoard(dest);
-                                    src.repaint();
-                                    dest.repaint();
+                                    undo(chessboard,chessboard.getClickController().getHistory());
+                                    chess1=src;
                                     continue;
                                 }
                                 else{
+                                    System.out.println(chess2.getChessboardPoint());
                                     //方法成功，恢复棋盘
-                                    System.out.println("evoke else");
-                                    chessboard.putChessOnBoard(src);
-                                    chessboard.putChessOnBoard(dest);
-                                    src.repaint();
-                                    dest.repaint();
+                                    System.out.println("evoke success");
+                                    for (int m = 0; m < chessboard.getCHESSBOARD_SIZE(); m++) {
+                                        for (int n = 0; n < chessboard.getCHESSBOARD_SIZE(); n++) {
+                                            if(! (chessComponents[m][n] instanceof EmptySlotComponent)){
+
+                                                ChessComponent attack = chessComponents[m][n];
+
+                                                //是否为敌方棋子
+                                                if(attack.getChessColor()!=chessColor){
+                                                    //攻击检测，若可攻击则指定方被将军
+                                                    if(attack.canMoveTo(chessComponents,chess1.getChessboardPoint())){
+                                                        return false;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    System.out.println("canMOve!");
+                                    undo(chessboard,chessboard.getClickController().getHistory());
 
                                     return true;
                                 }
@@ -256,7 +271,12 @@ public class task3function {
                 for (int j = 0; j < chessboard.getCHESSBOARD_SIZE(); j++) {
                     ChessComponent chess1 = chessboard.getChessComponents()[i][j];
                     if(chess1.getChessColor() == chessColor && chess1.canMoveTo(chessboard.getChessComponents(),target.getChessboardPoint())){
-                        return true;
+                        if(isCheck(chessboard,chessColor)){
+                            continue;
+                        }else{
+                            System.out.println("canEat");
+                            return true;
+                        }
                     }
                 }
             }
@@ -269,12 +289,13 @@ public class task3function {
      * 该方法实现判定对指定方的将死检测3：能否挡将。
      */
     public static boolean canBlock(Chessboard chessboard, ChessColor chessColor,ArrayList<ChessComponent> checkChesses){
-
         if(checkChesses==null){
+            System.out.println("cannotBlock");
             return false;
         }
         if(checkChesses.size()>=2){
             //一旦有两个棋子将军，该方法必然失效
+            System.out.println("cannotBlock");
             return false;
         }else if(checkChesses.size()==0){
             //嘿！没有棋子在将军！为什么会调用到个方法呢！
@@ -294,6 +315,7 @@ public class task3function {
                     }
                 }
             }
+            System.out.println("king is in: "+kingX+", "+kingY);
             ChessComponent target = createCopy(chessboard,checkChesses.get(0));
             int targetX = target.getChessboardPoint().getX();
             int targetY = target.getChessboardPoint().getY();
@@ -302,7 +324,7 @@ public class task3function {
             }else{
                 //若两棋之间相对距离仅为1，无需判定，王可以直接吃棋。
                 if(Math.abs(kingX-targetX)<=1&&Math.abs(kingY-targetY)<=1){
-                    return true;
+                    return false;
                 }
 
                 //此时有车 象 后三种棋子可能将军。若为象，需要挡两者间斜线，若为车，需要挡两者间直线，若为后，根据位置挡两者间斜线或直线
@@ -372,6 +394,8 @@ public class task3function {
                 }
 
                 //存储可挡落点之后：
+
+                System.out.println("king is in "+kingX+", "+kingY);
                 for (int i = 0; i < chessboard.getCHESSBOARD_SIZE(); i++) {
                     for (int j = 0; j < chessboard.getCHESSBOARD_SIZE(); j++) {
                         ChessComponent temp = chessboard.getChessComponents()[i][j];
@@ -387,8 +411,9 @@ public class task3function {
                         //该棋子失效，继续尝试
                     }
                 }
-                blockPoints.forEach(System.out::println);
+
                 //尝试结束，方法失败。
+                System.out.println("cannot block");
                 return false;
             }
         }

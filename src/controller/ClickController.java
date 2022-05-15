@@ -1,6 +1,7 @@
 package controller;
 
 import model.*;
+import view.ChessGameFrame;
 import view.Chessboard;
 import view.ChessboardPoint;
 
@@ -40,6 +41,8 @@ public class ClickController {
     private final Chessboard chessboard;
 
     private ChessComponent first;
+
+    private ChessGameFrame chessGameFrame;
 
     public ClickController(Chessboard chessboard) {
         this.chessboard = chessboard;
@@ -104,9 +107,9 @@ public class ClickController {
 
                 // 在这里执行将死判定。注意此时已经更换行棋方了
                 ChessColor enemyColor = chessboard.getCurrentColor();
-                System.out.println(enemyColor);
+
                 if(isCheckMate(chessboard,enemyColor)){
-                    //TODO:在这里发生将死后的事件
+                    System.out.println("evoke here!");
                     JOptionPane.showMessageDialog(chessboard,enemyColor+"负");
                 }
 
@@ -118,6 +121,9 @@ public class ClickController {
                 if(isRandomAI&&AIcolor==chessboard.getCurrentColor()){
                     randomAI(chessboard,AIcolor);
                 }
+
+
+
             }
         }
     }

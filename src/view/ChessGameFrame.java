@@ -52,6 +52,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
     private void addChessboard() {
         Chessboard chessboard = new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE);
         gameController = new GameController(chessboard);
+
         chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
         add(chessboard);
     }
@@ -59,12 +60,6 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
     /**
      * 在游戏面板中添加标签
      */
-
-
-
-
-
-
 
     private void addLabel() { //（Y）窗口创建文本框
        JLabel statusLabel = new JLabel("Black");

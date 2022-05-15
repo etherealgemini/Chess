@@ -25,7 +25,7 @@ public class GameController {
         this.chessboard = chessboard;
     }
 
-//Y 写个方法存档
+    //Y 写个方法存档
     public void storeGameToFile (String path){
 
         //存棋子和棋盘坐标
@@ -119,7 +119,6 @@ public class GameController {
                else {
                    System.out.println("创建"+path+"失败");
                }
-
             }
 
             FileWriter fileWriter = new FileWriter(finalPath);
