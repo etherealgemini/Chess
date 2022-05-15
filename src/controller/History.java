@@ -19,10 +19,6 @@ import static controller.ClickController.*;
  */
 public class History {
 
-
-
-
-
     private static History thisMove;//该次行棋的信息
     private ChessColor chessColor;//该次操作的行棋方
     private ChessComponent chess0;

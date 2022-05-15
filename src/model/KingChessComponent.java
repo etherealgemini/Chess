@@ -134,28 +134,28 @@ public class KingChessComponent extends ChessComponent {
             }
         }
 
-        //以下为王车易位判定
-        //check1:对是否为首次移动判定
-        boolean blackShortCastlingCheck1 = isKingFirstMove()&& (chessComponents[0][7] instanceof RookChessComponent && ((RookChessComponent) chessComponents[0][7]).isRookFirstMove());
-        boolean blackLongCastlingCheck1 = isKingFirstMove()&&(chessComponents[0][0] instanceof RookChessComponent && ((RookChessComponent) chessComponents[0][0]).isRookFirstMove());
-        //check2:越子判定
-        boolean blackShortCastlingCheck2 = true;
-        boolean blackLongCastlingCheck2 = true;
-        for (int i = 1; i < 4; i++) {
-            if(!(chessComponents[0][i] instanceof EmptySlotComponent)){
-                blackLongCastlingCheck2 = false;
-            }
-        }
-        for (int i = 1; i < 3; i++) {
-            if(!(chessComponents[0][7-i] instanceof EmptySlotComponent)){
-                blackShortCastlingCheck2 = false;
-            }
-        }
-        //check3:
-
-        //白方：
-        boolean whiteShortCastlingCheck1 = isKingFirstMove()&&(chessComponents[7][7] instanceof RookChessComponent && ((RookChessComponent) chessComponents[7][7]).isRookFirstMove());
-        boolean whiteLongCastlingCheck1 = isKingFirstMove()&&(chessComponents[7][0] instanceof RookChessComponent && ((RookChessComponent) chessComponents[7][0]).isRookFirstMove());
+//        //以下为王车易位判定
+//        //check1:对是否为首次移动判定
+//        boolean blackShortCastlingCheck1 = isKingFirstMove()&& (chessComponents[0][7] instanceof RookChessComponent && ((RookChessComponent) chessComponents[0][7]).isRookFirstMove());
+//        boolean blackLongCastlingCheck1 = isKingFirstMove()&&(chessComponents[0][0] instanceof RookChessComponent && ((RookChessComponent) chessComponents[0][0]).isRookFirstMove());
+//        //check2:越子判定
+//        boolean blackShortCastlingCheck2 = true;
+//        boolean blackLongCastlingCheck2 = true;
+//        for (int i = 1; i < 4; i++) {
+//            if(!(chessComponents[0][i] instanceof EmptySlotComponent)){
+//                blackLongCastlingCheck2 = false;
+//            }
+//        }
+//        for (int i = 1; i < 3; i++) {
+//            if(!(chessComponents[0][7-i] instanceof EmptySlotComponent)){
+//                blackShortCastlingCheck2 = false;
+//            }
+//        }
+//        //check3:
+//
+//        //白方：
+//        boolean whiteShortCastlingCheck1 = isKingFirstMove()&&(chessComponents[7][7] instanceof RookChessComponent && ((RookChessComponent) chessComponents[7][7]).isRookFirstMove());
+//        boolean whiteLongCastlingCheck1 = isKingFirstMove()&&(chessComponents[7][0] instanceof RookChessComponent && ((RookChessComponent) chessComponents[7][0]).isRookFirstMove());
         for (int i = 0; i < legalpoints.size(); i++) {
             if(chessComponents[legalpoints.get(i).getX()][legalpoints.get(i).getY()].getChessColor()==chessColor){
                 legalpoints.remove(i);

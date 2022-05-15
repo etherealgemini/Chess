@@ -5,6 +5,7 @@ import view.Chessboard;
 import view.ChessboardPoint;
 
 
+import javax.sound.sampled.SourceDataLine;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -25,6 +26,15 @@ public class ClickController {
 
     private ArrayList<History> history = new ArrayList<>();
 
+    /**
+     * 是否调用了AI
+     */
+    private boolean isRandomAI = false;
+
+    /**
+     * 你指定的AI行棋方
+     */
+    private ChessColor AIcolor = ChessColor.WHITE;
 
     private final Chessboard chessboard;
 
@@ -44,6 +54,7 @@ public class ClickController {
                 System.out.println("evoke handle first");
                 chessComponent.setSelected(true);
                 first = chessComponent;
+                //TODO:若要实现点击显示合法落子，请在这里实现。
                 first.repaint();
             }
         } else {
@@ -53,6 +64,8 @@ public class ClickController {
                 first = null;
                 recordFirst.repaint();
             } else if (handleSecond(chessComponent)) {
+
+                System.out.println("here");
                 //这里的chessComponent表示目标位置的棋子（包括空白）及其所有属性，first是被移动(被红圈选中的)棋子。
 
                 //一旦通过handleSecond检测，即表示该次行棋合法，且将被执行
@@ -79,11 +92,11 @@ public class ClickController {
                 chessboard.swapChessComponents(first, chessComponent);
 
                 // 在这里执行将军相关的操作合法性检测：若移动后被将军，则该次移动非法，执行悔棋操作回退。
-//                boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
-//                if(isCheckAfterMove){
-//                    System.out.println("You will lose if move here!");
-//                    undo(chessboard,history);
-//                }
+                boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
+                if(isCheckAfterMove){
+                    System.out.println("You will lose if move here!");
+                    undo(chessboard,history);
+                }
 
                 //change side 更换行棋方
                 chessboard.swapColor();
@@ -91,14 +104,19 @@ public class ClickController {
                 // 在这里执行将死判定。注意此时已经更换行棋方了
                 ChessColor enemyColor = chessboard.getCurrentColor();
                 System.out.println(enemyColor);
-//                if(isCheckMate(chessboard,enemyColor)){
-//                    //TODO:在这里发生将死后的事件
-//                    System.out.println(enemyColor+" is defeated!");
-//                }
+                if(isCheckMate(chessboard,enemyColor)){
+                    //TODO:在这里发生将死后的事件
+                    System.out.println(enemyColor+" is defeated!");
+                }
 
                 //reset the first (selected chess)
                 first.setSelected(false);
                 first = null;
+
+                //判定ai行棋时机
+                if(isRandomAI&&AIcolor==chessboard.getCurrentColor()){
+                    randomAI(chessboard,AIcolor);
+                }
             }
         }
     }
@@ -121,6 +139,54 @@ public class ClickController {
         //判定(吃子对象是否为对方棋子&&是否为合法移动)，返回值为Boolean值
         return chessComponent.getChessColor() != chessboard.getCurrentColor() &&
                 first.canMoveTo(chessboard.getChessComponents(), chessComponent.getChessboardPoint());
+    }
+
+    /**
+     * 随机行棋AI，你需要在这个方法内完成历史记录的录入。
+     */
+    public void randomAI(Chessboard chessboard,ChessColor AIcolor){
+        isRandomAI=true;
+        if(chessboard.getCurrentColor()!=AIcolor){
+            return;
+        }else{
+            ChessComponent[][] temp1 = chessboard.getChessComponents();
+            for (int i = 0; i < chessboard.getCHESSBOARD_SIZE(); i++) {
+                for (int j = 0; j < chessboard.getCHESSBOARD_SIZE(); j++) {
+                    if(temp1[i][j].getChessColor()==AIcolor){
+                        ChessComponent chess1 = temp1[i][j];
+                        for (int k = 0; k < chessboard.getCHESSBOARD_SIZE(); k++) {
+                            for (int l = 0; l < chessboard.getCHESSBOARD_SIZE(); l++) {
+                                ChessboardPoint destination = new ChessboardPoint(k,l);
+                                if(chess1.canMoveTo(temp1,destination)){
+                                    ChessComponent chess2 =temp1[k][l];
+                                    inputHistory(chessboard,history,chess1,chess2,null);
+                                    chessboard.swapChessComponents(chess1,chess2);
+                                    chessboard.swapColor();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    public void setRandomAI(boolean randomAI) {
+        isRandomAI = randomAI;
+    }
+
+    public boolean isRandomAI() {
+        return isRandomAI;
+    }
+
+    public void setAIcolor(ChessColor AIcolor) {
+        this.AIcolor = AIcolor;
+    }
+
+    public ChessColor getAIcolor() {
+        return AIcolor;
     }
 
     public static int getHistoryCnt() {

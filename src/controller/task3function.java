@@ -4,6 +4,7 @@ import model.*;
 import view.Chessboard;
 import view.ChessboardPoint;
 
+import javax.swing.plaf.basic.BasicSliderUI;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -117,7 +118,7 @@ public class task3function {
 
                                 ChessComponent attack = chessComponents[k][l];
 
-                                //敌方棋子检测
+                                //是否为敌方棋子
                                 if(attack.getChessColor()!=chessColor){
                                     //攻击检测，若可攻击则指定方被将军
                                     if(attack.canMoveTo(chessComponents,king.getChessboardPoint())){
@@ -412,7 +413,6 @@ public class task3function {
             System.out.println(checkChess.size());
             if(canMoveKing(chessboard,enemyColor)||canEat(chessboard,enemyColor,checkChess)||canBlock(chessboard,enemyColor,checkChess)){
                 //若三种方法任意一种通过，则不被将死，否则立即判负。
-                System.out.println(canBlock(chessboard,enemyColor,checkChess));
                 return false;
             }else{
                 return true;
@@ -461,10 +461,9 @@ public class task3function {
         }
         else if(input instanceof PawnChessComponent){
             ChessboardPoint outputBoardPoint = new ChessboardPoint(input.getChessboardPoint().getX(),input.getChessboardPoint().getY());
-            ChessboardPoint outputOriginPoint = new ChessboardPoint(((PawnChessComponent) input).getOriginpoint().getX(),((PawnChessComponent) input).getOriginpoint().getY());
             Point outputPoint = new Point(input.getX(),input.getY());
 
-            PawnChessComponent output = new PawnChessComponent(outputBoardPoint,outputOriginPoint,outputPoint,input.getChessColor(),
+            PawnChessComponent output = new PawnChessComponent(outputBoardPoint,outputPoint,input.getChessColor(),
                     input.getClickController(),chessboard.getCHESS_SIZE(),
                     ((PawnChessComponent) input).isFirstBypass(),((PawnChessComponent) input).isFirstMove(),
                     ((PawnChessComponent) input).isDoubleMove(),((PawnChessComponent) input).isBypass(),
@@ -522,14 +521,10 @@ public class task3function {
 
             if(src instanceof PawnChessComponent){
                 System.out.println("evoke setFirstMove");
-                System.out.println(((PawnChessComponent) src).getOriginpoint());
-                //判断该次移动是否为初次移动
-                if(((PawnChessComponent) src).getOriginpoint().getX()==srcX&&((PawnChessComponent) src).getOriginpoint().getY()==srcY){
+                if(((PawnChessComponent) src).isPawnFirstMove()){
                     ((PawnChessComponent) src).setFirstMove(true);
-                    System.out.println("evoke setFirstMove");
-                    if(Math.abs(srcX-destX)==2){
-                        ((PawnChessComponent) src).setDoubleMove(true);
-                    }
+                }else{
+                    ((PawnChessComponent) src).setFirstMove(false);
                 }
             }
 

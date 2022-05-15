@@ -35,7 +35,13 @@ public class PawnChessComponent extends ChessComponent {
     private boolean bypass = false;
     private ChessComponent bypassPawn=null;
     private boolean firstBypass = false;
-    private ChessboardPoint originpoint;
+
+    public ArrayList<ChessboardPoint> getOrigin() {
+        return origin;
+    }
+
+    private ArrayList<ChessboardPoint> origin = new ArrayList<>();
+
 
 
     private static Image PAWN_WHITE;
@@ -74,16 +80,10 @@ public class PawnChessComponent extends ChessComponent {
         }
     }
 
-    public ChessboardPoint getOriginpoint() {
-        return originpoint;
-    }
 
     public PawnChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor color, ClickController listener, int size) {
         super(chessboardPoint, location, color, listener, size);
         initiatePawnImage(color);
-
-        originpoint = new ChessboardPoint(chessboardPoint.getX(),chessboardPoint.getY());
-
     }
 
 
@@ -100,7 +100,7 @@ public class PawnChessComponent extends ChessComponent {
         this.bypassPawn = bypassPawn;
     }
 
-    public PawnChessComponent(ChessboardPoint chessboardPoint,ChessboardPoint originpoint, Point location, ChessColor color, ClickController listener, int size, boolean firstBypass, boolean firstMove, boolean doubleMove, boolean bypass, ChessComponent bypassPawn){
+    public PawnChessComponent(ChessboardPoint chessboardPoint,Point location, ChessColor color, ClickController listener, int size, boolean firstBypass, boolean firstMove, boolean doubleMove, boolean bypass, ChessComponent bypassPawn){
         super(chessboardPoint, location, color, listener, size);
         initiatePawnImage(color);
         this.firstBypass=firstBypass;
@@ -108,7 +108,6 @@ public class PawnChessComponent extends ChessComponent {
         this.bypass=bypass;
         this.doubleMove=doubleMove;
         this.firstMove=firstMove;
-        this.originpoint=originpoint;
     }
 
 
@@ -119,6 +118,37 @@ public class PawnChessComponent extends ChessComponent {
     public void setFirstBypass(boolean firstBypass) {
         this.firstBypass = firstBypass;
     }
+
+
+    public boolean isPawnFirstMove(){
+        boolean isfirstMove = false;
+        if(getChessColor()==ChessColor.WHITE){
+            for (int i = 0; i < 8; i++) {
+                ChessboardPoint originpoint = new ChessboardPoint(6,i);
+                origin.add(originpoint);
+            }
+        }
+        if(getChessColor()==ChessColor.BLACK){
+            for (int i = 0; i < 8; i++) {
+                ChessboardPoint originpoint = new ChessboardPoint(1,i);
+                origin.add(originpoint);
+            }
+        }
+
+        int row = getChessboardPoint().getX();
+        int col = getChessboardPoint().getY();
+
+//        System.out.println("Row :"+row+" Col: "+col);
+
+        for (int i = 0; i < origin.size(); i++) {
+            if(row==origin.get(i).getX()&&col==origin.get(i).getY()){
+                isfirstMove=true;
+            }
+        }
+
+        return isfirstMove;
+    }
+
 
     /**
      * 兵棋子的移动规则
@@ -148,9 +178,10 @@ public class PawnChessComponent extends ChessComponent {
         int col = source.getY();
 
         PawnChessComponent Target = null;
-        boolean isInRowUpperBound = row+1<=7;
-        boolean isInRowLowerBound = row-1>=0;
-
+//        boolean isInRowUpperBound = row+1<=7;
+//        boolean isInRowLowerBound = row-1>=0;
+        firstMove = isPawnFirstMove();
+        System.out.println("Firstmove = "+firstMove);
         //检测：若为 非第一回合 且 上一回合为走兵 且 上一回合走兵走两格 则为真
         boolean instanceBypass = ClickController.getHistoryCnt()-1>=0 && getClickController().getHistory().get(ClickController.getHistoryCnt()-1).getChess0() instanceof PawnChessComponent &&
                 ((PawnChessComponent) getClickController().getHistory().get(ClickController.getHistoryCnt()-1).getChess0()).isDoubleMove();
