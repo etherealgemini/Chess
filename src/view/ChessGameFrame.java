@@ -22,6 +22,27 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
     public final int CHESSBOARD_SIZE;
     private GameController gameController;
     private JLabel statusLabel ;
+    private JButton startGame;
+
+    public JButton getStartGame() {
+        return startGame;
+    }
+
+        public ChessGameFrame(int number){
+        this.WIDTH = number;
+        this.HEIGTH = number+100;
+        this.CHESSBOARD_SIZE = 0;
+            setSize(WIDTH, HEIGTH); //设置窗体的大小（Y）
+            setLocationRelativeTo(null); // Center the window.
+            setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //设置程序关闭按键，如果点击右上方的叉就游戏全部关闭了
+            setLayout(null);
+           addStartGameButton();
+           addBackgroundPicture();
+    }
+
+
+
+
     public ChessGameFrame(int width, int height) {
         setTitle("2022 CS102A Project Demo"); //设置标题
         this.WIDTH = width;
@@ -33,7 +54,6 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //设置程序关闭按键，如果点击右上方的叉就游戏全部关闭了
         setLayout(null);
 
-
         addChessboard();
         addHelloButton();
         addLoadButton();
@@ -42,7 +62,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         addFileButton();
         addLabel();
         addMonkeyAIButton();
-
+//        addBackgroundPicture();
 
     }
 
@@ -115,13 +135,13 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         button.addActionListener(e -> {
             System.out.println("Click load");
             String path = JOptionPane.showInputDialog(this,"Input Path here");
+            if(path != null){
             gameController.getChessboard().initiateEmptyChessboard();
             String feedback = gameController.loadGameFromFile(path);//在该方法中完成文件的读取
-            if (feedback!=null){
-            JOptionPane.showMessageDialog( this,feedback);}
+            JOptionPane.showMessageDialog( this,feedback);
           if (!feedback.equals("Successful!")) {
               gameController.getChessboard().initiateEmptyChessboard();
-              gameController.getChessboard().initiateAllChessComponents();
+              gameController.getChessboard().initiateAllChessComponents();}
 
 
           }
@@ -215,7 +235,26 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         });
 
     }
+    private void addStartGameButton(){
+        startGame = new JButton("Start Game");
+        startGame.setLocation(140,350);
+        startGame.setSize(200, 60);
+        startGame.setFont(new Font("Rockwell", Font.BOLD, 20));
+        startGame.setVisible(true);
+        add(startGame);
+    }
+    private void addBackgroundPicture(){
+        ImageIcon bg = new ImageIcon("images/ChessBackground1.jpg");
+        JLabel label = new JLabel(bg);
+        label.setSize(this.WIDTH,this.HEIGTH);
+        this.getLayeredPane().add(label);
+//        JPanel pan = (JPanel) this.getContentPane();
+//        pan.setOpaque(false);
+//        this.getLayeredPane().add(label, Integer.valueOf(Integer.MIN_VALUE));
 
-
+//        this.setUndecorated(true);
+//        this.setBackground(new Color(0,0,0,0));
+//        this.setVisible(true);
+    }
 
 }
