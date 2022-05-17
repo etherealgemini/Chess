@@ -167,8 +167,6 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             statusLabel.setText("White");
             gameController.getChessboard().repaint();
 
-
-
         });
     }
 

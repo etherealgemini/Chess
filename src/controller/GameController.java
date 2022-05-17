@@ -163,7 +163,7 @@ public class GameController {
                     break;
                 }
             }
-            if (!isEightColumn || chessData.size() !=9){
+            if (!isEightColumn){
 
                 return "错误类型：101";
             }
