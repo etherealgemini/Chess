@@ -97,6 +97,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         statusLabel.setLocation(HEIGTH, HEIGTH / 10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
+        statusLabel.setForeground(Color.WHITE);
         add(statusLabel);
     }
 
