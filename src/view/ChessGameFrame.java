@@ -246,13 +246,9 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         JLabel label = new JLabel(bg);
         label.setSize(this.WIDTH,this.HEIGTH);
         this.getLayeredPane().add(label);
-//        JPanel pan = (JPanel) this.getContentPane();
-//        pan.setOpaque(false);
-//        this.getLayeredPane().add(label, Integer.valueOf(Integer.MIN_VALUE));
+        JPanel pan = (JPanel) this.getContentPane();
+        pan.setOpaque(false);
 
-//        this.setUndecorated(true);
-//        this.setBackground(new Color(0,0,0,0));
-//        this.setVisible(true);
     }
 
 }
