@@ -62,7 +62,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
         addFileButton();
         addLabel();
         addMonkeyAIButton();
-//        addBackgroundPicture();
+        addBackgroundPicture();
 
     }
 
@@ -87,12 +87,6 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
     /**
      * 在游戏面板中添加标签
      */
-
-
-
-
-
-
 
     private void addLabel() { //（Y）窗口创建文本框
         if (gameController.getChessboard().getCurrentColor()==ChessColor.BLACK){
@@ -244,10 +238,15 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
     private void addBackgroundPicture(){
         ImageIcon bg = new ImageIcon("images/ChessBackground1.jpg");
         JLabel label = new JLabel(bg);
-        label.setSize(this.WIDTH,this.HEIGTH);
+        label.setBounds(0,0,this.WIDTH,this.HEIGTH);
         this.getLayeredPane().add(label);
         JPanel pan = (JPanel) this.getContentPane();
         pan.setOpaque(false);
+        this.getLayeredPane().add(label, Integer.MIN_VALUE);
+        //设置可见
+        setVisible(true);
+        //点关闭按钮时退出
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 
