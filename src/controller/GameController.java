@@ -199,6 +199,8 @@ public class GameController {
             }
 
             chessboard.loadGame(chessData);//在该方法中实现游戏数据的载入
+
+
             return "Successful!";
 
 

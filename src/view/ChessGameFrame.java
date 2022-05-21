@@ -16,7 +16,7 @@ import java.awt.event.ComponentEvent;
  * 该类将配合GameController与ClickController完成游戏的完整运行
  */
 public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体（Y）
-    //    public final Dimension FRAME_SIZE ;
+
     private final int WIDTH;
     private final int HEIGTH;
     public final int CHESSBOARD_SIZE;

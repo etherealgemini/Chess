@@ -44,6 +44,11 @@ public class ClickController {
      */
     private ChessColor AIcolor = ChessColor.WHITE;
 
+    /**
+     * 棋局结束判定
+     */
+    private boolean gameOver = false;
+
     private final Chessboard chessboard;
 
     private ChessComponent first;
@@ -75,7 +80,7 @@ public class ClickController {
                 ChessComponent recordFirst = first;
                 first = null;
                 recordFirst.repaint();
-            } else if (handleSecond(chessComponent)) {
+            } else if (handleSecond(chessComponent)&&!gameOver) {
                 System.out.println(chessboard.getCurrentColor());
 //加入setText方法
                 if (chessboard.getCurrentColor()==ChessColor.BLACK){
@@ -132,6 +137,7 @@ public class ClickController {
 
                 if(isCheckMate(chessboard,enemyColor)){
                     System.out.println("evoke here!");
+                    gameOver=true;
                     JOptionPane.showMessageDialog(chessboard,enemyColor+"负");
                 }
 

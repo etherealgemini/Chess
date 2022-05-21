@@ -19,6 +19,7 @@ public class Music extends Thread {
         this.fileName = mp3File;
     }
 
+    @Override
     @SuppressWarnings("unused")
     public void run() {
         File soundFile = new File(fileName); // 播放音乐的文件名
@@ -59,15 +60,16 @@ public class Music extends Thread {
             try {
                 while (nBytesRead != -1) {
                     nBytesRead = audioInputStream.read(abData, 0, abData.length);
-                    if (nBytesRead >= 0)
+                    if (nBytesRead >= 0) {
                         auline.write(abData, 0, nBytesRead);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
             } finally {
                 auline.drain();
- auline.close();
+                auline.close();
             }
         }
     }
