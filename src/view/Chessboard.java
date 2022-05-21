@@ -134,7 +134,7 @@ public class Chessboard extends JComponent {
     }
 
     /**
-     * 该方法实现放置棋子，不会覆盖掉原棋子，且棋盘数组中不会存储该棋子信息。目前仅用于放置合法落子点标记。
+     * 该方法实现放置棋子，不会覆盖掉原棋子，且棋盘数组中不会存储该棋子信息。
      * @param chessComponent
      */
     public void addChessOnBoard(ChessComponent chessComponent) {
@@ -228,7 +228,6 @@ public class Chessboard extends JComponent {
 
     /**
      * 该方法实现棋盘数据载入
-     * FIXME:这里仅print出了你输入的内容。
      * @param chessData 棋盘数据
      */
     public void loadGame(List<String> chessData) {

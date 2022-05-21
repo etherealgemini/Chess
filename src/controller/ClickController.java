@@ -44,6 +44,8 @@ public class ClickController {
      */
     private ChessColor AIcolor = ChessColor.WHITE;
 
+
+
     /**
      * 棋局结束判定
      */
@@ -232,4 +234,11 @@ public class ClickController {
         return history;
     }
 
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
 }

@@ -157,6 +157,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             System.out.println("Click restart");
             JOptionPane.showMessageDialog(this, "点击确认重开一局");
            // Y 写方法初始化游戏
+            gameController.getChessboard().getClickController().setGameOver(false);
             gameController.getChessboard().initiateEmptyChessboard();
             gameController.getChessboard().initiateAllChessComponents();
             gameController.getChessboard().setCurrentColor(ChessColor.WHITE);

@@ -16,7 +16,7 @@ public class Main {
 
             ChessGameFrame startFrame = new ChessGameFrame(500);
             startFrame.setVisible(true);
-           startFrame.getStartGame().addActionListener(e ->{
+            startFrame.getStartGame().addActionListener(e ->{
                mainFrame.setVisible(true);
                startFrame.setVisible(false);
            });
