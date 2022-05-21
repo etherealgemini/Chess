@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(() -> {
-            Music audioPlayWave = new Music("images\\小星星变奏曲.wav");// 开音乐 音樂名
+            Music audioPlayWave = new Music("images\\小星星变奏曲.wav");// 开音乐
             audioPlayWave.start();
             @SuppressWarnings("unused")
             int musicOpenLab = 1;

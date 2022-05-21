@@ -44,7 +44,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
 
 
     public ChessGameFrame(int width, int height) {
-        setTitle("2022 CS102A Project Demo"); //设置标题
+        setTitle("国际象棋"); //设置标题
         this.WIDTH = width;
         this.HEIGTH = height;
         this.CHESSBOARD_SIZE = HEIGTH * 4 / 5;
@@ -106,7 +106,11 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
      */
 
     private void addHelloButton() {
-        JButton button = new JButton("Show Hello Here");
+        JButton button = new JButton("Hello");
+        button.setLocation(HEIGTH, HEIGTH / 10 + 60);
+        button.setSize(200, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
         button.addActionListener((e) -> {
             JOptionPane.showMessageDialog(this, "准备好开始一场新的对决了吗");
 
@@ -114,10 +118,7 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
 
 
         });
-        button.setLocation(HEIGTH, HEIGTH / 10 + 60);
-        button.setSize(200, 60);
-        button.setFont(new Font("Rockwell", Font.BOLD, 20));
-        add(button);
+
     }
 
     private void addLoadButton() {
