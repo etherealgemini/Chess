@@ -137,9 +137,10 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             JOptionPane.showMessageDialog( this,feedback);
           if (!feedback.equals("Successful!")) {
               gameController.getChessboard().initiateEmptyChessboard();
-              gameController.getChessboard().initiateAllChessComponents();}
+              gameController.getChessboard().initiateAllChessComponents();
+          }
 
-          //Z load后作一些初始化
+                //Z load后作一些初始化，这些初始化无论load是否成功均调用。
                 ArrayList<History> temp1 = gameController.getChessboard().getClickController().getHistory();
                 for (int i = 0; i < temp1.size(); i++) {
                     if(temp1.size()==0){
@@ -151,9 +152,9 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
                 ClickController.setHistoryCnt(0);
                 gameController.getChessboard().getClickController().setGameOver(false);
                 gameController.getChessboard().getClickController().setRandomAI(false);
-
+                gameController.getChessboard().repaint();
           }
-            gameController.getChessboard().repaint();
+
         });
     }
 
