@@ -17,6 +17,10 @@ import static controller.task3function.*;
 
 public class ClickController {
 
+    public static void setHistoryCnt(int historyCnt) {
+        ClickController.historyCnt = historyCnt;
+    }
+
     /**
      * int 历史记录指针
      */

@@ -2,13 +2,13 @@ package view;
 
 import controller.ClickController;
 import controller.GameController;
+import controller.History;
 import controller.task3function;
 import model.ChessColor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
 
 
 /**
@@ -139,6 +139,18 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
               gameController.getChessboard().initiateEmptyChessboard();
               gameController.getChessboard().initiateAllChessComponents();}
 
+          //Z load后作一些初始化
+                ArrayList<History> temp1 = gameController.getChessboard().getClickController().getHistory();
+                for (int i = 0; i < temp1.size(); i++) {
+                    if(temp1.size()==0){
+                        break;
+                    }
+                    temp1.remove(i);
+                    i--;
+                }
+                ClickController.setHistoryCnt(0);
+                gameController.getChessboard().getClickController().setGameOver(false);
+                gameController.getChessboard().getClickController().setRandomAI(false);
 
           }
             gameController.getChessboard().repaint();
@@ -157,7 +169,17 @@ public class ChessGameFrame extends JFrame {   //JFrame用于生成一个窗体�
             System.out.println("Click restart");
             JOptionPane.showMessageDialog(this, "点击确认重开一局");
            // Y 写方法初始化游戏
+            ArrayList<History> temp1 = gameController.getChessboard().getClickController().getHistory();
+            for (int i = 0; i < temp1.size(); i++) {
+                if(temp1.size()==0){
+                    break;
+                }
+                temp1.remove(i);
+                i--;
+            }
+            ClickController.setHistoryCnt(0);
             gameController.getChessboard().getClickController().setGameOver(false);
+            gameController.getChessboard().getClickController().setRandomAI(false);
             gameController.getChessboard().initiateEmptyChessboard();
             gameController.getChessboard().initiateAllChessComponents();
             gameController.getChessboard().setCurrentColor(ChessColor.WHITE);
