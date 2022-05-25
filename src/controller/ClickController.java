@@ -8,7 +8,11 @@ import view.ChessboardPoint;
 
 import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import static controller.History.inputHistory;
@@ -48,7 +52,15 @@ public class ClickController {
      */
     private ChessColor AIcolor = ChessColor.WHITE;
 
+    AudioClip click ;
 
+    {
+        try {
+        click = Applet.newAudioClip(new File("images/音效.wav").toURI().toURL());
+        } catch (MalformedURLException e) {
+        e.printStackTrace();
+        }
+    }
 
     /**
      * 棋局结束判定
@@ -71,13 +83,13 @@ public class ClickController {
      * 该方法实现响应针对棋盘上发生的鼠标点击事件
      * @param chessComponent
      */
+
     public void onClick(ChessComponent chessComponent) {
         if (first == null) {
             if (handleFirst(chessComponent)) {
                 System.out.println("evoke handle first");
                 chessComponent.setSelected(true);
                 first = chessComponent;
-                //TODO:若要实现点击显示合法落子，请在这里实现。
                 first.repaint();
             }
         } else {
@@ -121,6 +133,7 @@ public class ClickController {
 
                 //repaint in swap chess method.
                 chessboard.swapChessComponents(first, chessComponent);
+                click.play();
 
                 // 在这里执行将军相关的操作合法性检测：若移动后被将军，则该次移动非法，执行悔棋操作回退。
                 boolean isCheckAfterMove = isCheck(chessboard,chessboard.getCurrentColor());
